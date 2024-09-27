@@ -38,7 +38,7 @@ Public Class Form1
 
     End Sub
 
-
+    'Je suis olivier
     Private Sub NomBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NomBox.SelectedIndexChanged
 
         Dim table_name As String = NomBox.SelectedItem.ToString()
