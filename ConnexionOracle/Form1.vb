@@ -15,7 +15,7 @@ Public Class Form1
         'connString = "Driver={Microsoft ODBC for Oracle};CONNECTSTRING=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.0.23.80)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORCL)));Uid=MESGUEN3;Pwd=Estran;"
         'SERVEUR DE TEST
         'connString = "Driver={Microsoft ODBC for Oracle};CONNECTSTRING=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.0.220.100)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORAPROF)));Uid=SCOTT;Pwd=tiger;"
-        connString = "DSN=TEST2024;Uid=SCOTT;Pwd=Iroise29;"
+        connString = "DSN=CnxOracleFermeD25;Uid=SLAM7;Pwd=slam7;"
         'connString = "DSN=FERME;Uid=SCOTT;Pwd=tiger;"
 
         myConnection.ConnectionString = connString
