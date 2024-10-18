@@ -31,7 +31,7 @@ Partial Class Form1
         '
         Me.NomBox.FormattingEnabled = True
         Me.NomBox.Location = New System.Drawing.Point(16, 15)
-        Me.NomBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.NomBox.Margin = New System.Windows.Forms.Padding(4)
         Me.NomBox.Name = "NomBox"
         Me.NomBox.Size = New System.Drawing.Size(649, 24)
         Me.NomBox.TabIndex = 0
@@ -40,7 +40,7 @@ Partial Class Form1
         '
         Me.SocGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.SocGrid.Location = New System.Drawing.Point(16, 48)
-        Me.SocGrid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SocGrid.Margin = New System.Windows.Forms.Padding(4)
         Me.SocGrid.Name = "SocGrid"
         Me.SocGrid.RowHeadersWidth = 51
         Me.SocGrid.Size = New System.Drawing.Size(651, 506)
@@ -53,7 +53,7 @@ Partial Class Form1
         Me.ClientSize = New System.Drawing.Size(683, 567)
         Me.Controls.Add(Me.SocGrid)
         Me.Controls.Add(Me.NomBox)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "Form1"
         Me.Text = "Test ORACLE"
         CType(Me.SocGrid, System.ComponentModel.ISupportInitialize).EndInit()

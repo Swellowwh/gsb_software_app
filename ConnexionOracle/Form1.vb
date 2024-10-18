@@ -26,7 +26,6 @@ Public Class Form1
         Catch ex As Odbc.OdbcException
             MessageBox.Show(ex.Message)
         End Try
-
         Dim query As String = "SELECT table_name FROM user_tables"
         myCommand.Connection = myConnection
         myCommand.CommandText = query
@@ -51,5 +50,7 @@ Public Class Form1
 
     End Sub
 
+    Private Sub SocGrid_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles SocGrid.CellContentClick
 
+    End Sub
 End Class
