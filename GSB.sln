@@ -7,7 +7,9 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ConnexionOracle", "Connexio
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Rapport", "Rapport\Rapport.vbproj", "{1BE783E7-3A5F-428B-9571-59BF5369ACD3}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "visite", "visite\visite.vbproj", "{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Visite", "visite\Visite.vbproj", "{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Liste_Rapports", "Liste_Rapports\Liste_Rapports.vbproj", "{56911568-C1AD-48C5-A853-A9E8E5EE4256}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,14 @@ Global
 		{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}.Release|x86.ActiveCfg = Release|Any CPU
 		{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}.Release|x86.Build.0 = Release|Any CPU
+		{56911568-C1AD-48C5-A853-A9E8E5EE4256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56911568-C1AD-48C5-A853-A9E8E5EE4256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56911568-C1AD-48C5-A853-A9E8E5EE4256}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{56911568-C1AD-48C5-A853-A9E8E5EE4256}.Debug|x86.Build.0 = Debug|Any CPU
+		{56911568-C1AD-48C5-A853-A9E8E5EE4256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56911568-C1AD-48C5-A853-A9E8E5EE4256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56911568-C1AD-48C5-A853-A9E8E5EE4256}.Release|x86.ActiveCfg = Release|Any CPU
+		{56911568-C1AD-48C5-A853-A9E8E5EE4256}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
