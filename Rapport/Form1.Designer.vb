@@ -25,37 +25,45 @@ Partial Class Form1
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Label8 = New System.Windows.Forms.Label()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.ReportButton = New System.Windows.Forms.Button()
         Me.logout = New System.Windows.Forms.Button()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.Panel4 = New System.Windows.Forms.Panel()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.MedicSelect = New System.Windows.Forms.CheckedListBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Panel7 = New System.Windows.Forms.Panel()
+        Me.Panel6 = New System.Windows.Forms.Panel()
+        Me.Panel5 = New System.Windows.Forms.Panel()
         Me.ReportDate = New System.Windows.Forms.DateTimePicker()
         Me.Label7 = New System.Windows.Forms.Label()
-        Me.Panel5 = New System.Windows.Forms.Panel()
-        Me.Panel6 = New System.Windows.Forms.Panel()
+        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.inputNomPatient = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.dataRole = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.dataUtilisateur = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.ImageList2 = New System.Windows.Forms.ImageList(Me.components)
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.inputObservations = New System.Windows.Forms.TextBox()
+        Me.declinerButton = New System.Windows.Forms.Button()
+        Me.validButton = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
-        Me.Panel3.SuspendLayout()
-        Me.Panel4.SuspendLayout()
+        Me.Panel7.SuspendLayout()
         Me.Panel5.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel4.SuspendLayout()
+        Me.Panel3.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.Panel1.Controls.Add(Me.Label8)
         Me.Panel1.Controls.Add(Me.Button2)
         Me.Panel1.Controls.Add(Me.ReportButton)
         Me.Panel1.Controls.Add(Me.logout)
@@ -63,6 +71,18 @@ Partial Class Form1
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(872, 53)
         Me.Panel1.TabIndex = 0
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.BackColor = System.Drawing.Color.Transparent
+        Me.Label8.Font = New System.Drawing.Font("Impact", 27.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.ForeColor = System.Drawing.SystemColors.ControlLightLight
+        Me.Label8.Location = New System.Drawing.Point(20, 4)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(79, 45)
+        Me.Label8.TabIndex = 8
+        Me.Label8.Text = "GSB"
         '
         'Button2
         '
@@ -133,7 +153,12 @@ Partial Class Form1
         'Panel2
         '
         Me.Panel2.BackColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Panel2.Controls.Add(Me.PictureBox1)
+        Me.Panel2.Controls.Add(Me.validButton)
+        Me.Panel2.Controls.Add(Me.declinerButton)
+        Me.Panel2.Controls.Add(Me.MedicSelect)
+        Me.Panel2.Controls.Add(Me.Label10)
+        Me.Panel2.Controls.Add(Me.Label9)
+        Me.Panel2.Controls.Add(Me.Panel7)
         Me.Panel2.Controls.Add(Me.Panel6)
         Me.Panel2.Controls.Add(Me.Panel5)
         Me.Panel2.Controls.Add(Me.Label7)
@@ -145,102 +170,61 @@ Partial Class Form1
         Me.Panel2.Size = New System.Drawing.Size(872, 480)
         Me.Panel2.TabIndex = 1
         '
-        'Panel3
+        'MedicSelect
         '
-        Me.Panel3.BackColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Panel3.Controls.Add(Me.Label4)
-        Me.Panel3.Controls.Add(Me.Label3)
-        Me.Panel3.Controls.Add(Me.Label2)
-        Me.Panel3.Controls.Add(Me.Label1)
-        Me.Panel3.Location = New System.Drawing.Point(12, 71)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(872, 33)
-        Me.Panel3.TabIndex = 3
+        Me.MedicSelect.FormattingEnabled = True
+        Me.MedicSelect.Location = New System.Drawing.Point(10, 292)
+        Me.MedicSelect.Name = "MedicSelect"
+        Me.MedicSelect.Size = New System.Drawing.Size(303, 94)
+        Me.MedicSelect.TabIndex = 13
         '
-        'Label1
+        'Label10
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI Variable Display", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.White
-        Me.Label1.Location = New System.Drawing.Point(6, 6)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(90, 21)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Utilisateur :"
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Segoe UI Variable Display", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.ForeColor = System.Drawing.Color.White
+        Me.Label10.Location = New System.Drawing.Point(8, 268)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(207, 21)
+        Me.Label10.TabIndex = 10
+        Me.Label10.Text = "Médicamment sélectionné  :"
         '
-        'Label2
+        'Label9
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI Variable Display", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(94, 9)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(105, 17)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Nom / Prénom U"
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Segoe UI Variable Display", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.ForeColor = System.Drawing.Color.White
+        Me.Label9.Location = New System.Drawing.Point(8, 195)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(110, 21)
+        Me.Label9.TabIndex = 9
+        Me.Label9.Text = "Observations :"
         '
-        'Label3
+        'Panel7
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI Variable Display", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.ForeColor = System.Drawing.Color.White
-        Me.Label3.Location = New System.Drawing.Point(248, 6)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(122, 21)
-        Me.Label3.TabIndex = 2
-        Me.Label3.Text = "Rôle utilisateur :"
+        Me.Panel7.BackColor = System.Drawing.Color.White
+        Me.Panel7.Controls.Add(Me.inputObservations)
+        Me.Panel7.Location = New System.Drawing.Point(9, 219)
+        Me.Panel7.Name = "Panel7"
+        Me.Panel7.Size = New System.Drawing.Size(305, 27)
+        Me.Panel7.TabIndex = 8
         '
-        'Label4
+        'Panel6
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Segoe UI Variable Display", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.ForeColor = System.Drawing.Color.White
-        Me.Label4.Location = New System.Drawing.Point(372, 9)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(93, 17)
-        Me.Label4.TabIndex = 3
-        Me.Label4.Text = "Nom du rôle U"
+        Me.Panel6.BackColor = System.Drawing.Color.White
+        Me.Panel6.Location = New System.Drawing.Point(554, 34)
+        Me.Panel6.Name = "Panel6"
+        Me.Panel6.Size = New System.Drawing.Size(305, 27)
+        Me.Panel6.TabIndex = 7
         '
-        'Label5
+        'Panel5
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Segoe UI Variable Display", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.ForeColor = System.Drawing.Color.White
-        Me.Label5.Location = New System.Drawing.Point(6, 9)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(279, 32)
-        Me.Label5.TabIndex = 4
-        Me.Label5.Text = "Rédaction d'un rapport"
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Segoe UI Variable Display", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.ForeColor = System.Drawing.Color.White
-        Me.Label6.Location = New System.Drawing.Point(7, 53)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(128, 21)
-        Me.Label6.TabIndex = 4
-        Me.Label6.Text = "Nom du patient :"
-        '
-        'Panel4
-        '
-        Me.Panel4.BackColor = System.Drawing.Color.White
-        Me.Panel4.Controls.Add(Me.TextBox1)
-        Me.Panel4.Location = New System.Drawing.Point(8, 78)
-        Me.Panel4.Name = "Panel4"
-        Me.Panel4.Size = New System.Drawing.Size(305, 27)
-        Me.Panel4.TabIndex = 5
-        '
-        'TextBox1
-        '
-        Me.TextBox1.BackColor = System.Drawing.SystemColors.Window
-        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox1.Location = New System.Drawing.Point(2, 3)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(298, 19)
-        Me.TextBox1.TabIndex = 6
+        Me.Panel5.BackColor = System.Drawing.Color.White
+        Me.Panel5.Controls.Add(Me.ReportDate)
+        Me.Panel5.Location = New System.Drawing.Point(8, 144)
+        Me.Panel5.Name = "Panel5"
+        Me.Panel5.Size = New System.Drawing.Size(305, 27)
+        Me.Panel5.TabIndex = 6
         '
         'ReportDate
         '
@@ -262,22 +246,102 @@ Partial Class Form1
         Me.Label7.TabIndex = 7
         Me.Label7.Text = "Date :"
         '
-        'Panel5
+        'Panel4
         '
-        Me.Panel5.BackColor = System.Drawing.Color.White
-        Me.Panel5.Controls.Add(Me.ReportDate)
-        Me.Panel5.Location = New System.Drawing.Point(8, 144)
-        Me.Panel5.Name = "Panel5"
-        Me.Panel5.Size = New System.Drawing.Size(305, 27)
-        Me.Panel5.TabIndex = 6
+        Me.Panel4.BackColor = System.Drawing.Color.White
+        Me.Panel4.Controls.Add(Me.inputNomPatient)
+        Me.Panel4.Location = New System.Drawing.Point(8, 78)
+        Me.Panel4.Name = "Panel4"
+        Me.Panel4.Size = New System.Drawing.Size(305, 27)
+        Me.Panel4.TabIndex = 5
         '
-        'Panel6
+        'inputNomPatient
         '
-        Me.Panel6.BackColor = System.Drawing.Color.White
-        Me.Panel6.Location = New System.Drawing.Point(554, 34)
-        Me.Panel6.Name = "Panel6"
-        Me.Panel6.Size = New System.Drawing.Size(305, 27)
-        Me.Panel6.TabIndex = 7
+        Me.inputNomPatient.BackColor = System.Drawing.SystemColors.Window
+        Me.inputNomPatient.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.inputNomPatient.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.inputNomPatient.Location = New System.Drawing.Point(2, 3)
+        Me.inputNomPatient.Name = "inputNomPatient"
+        Me.inputNomPatient.Size = New System.Drawing.Size(298, 19)
+        Me.inputNomPatient.TabIndex = 6
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI Variable Display", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.ForeColor = System.Drawing.Color.White
+        Me.Label6.Location = New System.Drawing.Point(7, 53)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(128, 21)
+        Me.Label6.TabIndex = 4
+        Me.Label6.Text = "Nom du patient :"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI Variable Display", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.ForeColor = System.Drawing.Color.White
+        Me.Label5.Location = New System.Drawing.Point(6, 9)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(279, 32)
+        Me.Label5.TabIndex = 4
+        Me.Label5.Text = "Rédaction d'un rapport"
+        '
+        'Panel3
+        '
+        Me.Panel3.BackColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.Panel3.Controls.Add(Me.dataRole)
+        Me.Panel3.Controls.Add(Me.Label3)
+        Me.Panel3.Controls.Add(Me.dataUtilisateur)
+        Me.Panel3.Controls.Add(Me.Label1)
+        Me.Panel3.Location = New System.Drawing.Point(12, 71)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(872, 33)
+        Me.Panel3.TabIndex = 3
+        '
+        'dataRole
+        '
+        Me.dataRole.AutoSize = True
+        Me.dataRole.Font = New System.Drawing.Font("Segoe UI Variable Display", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataRole.ForeColor = System.Drawing.Color.White
+        Me.dataRole.Location = New System.Drawing.Point(372, 9)
+        Me.dataRole.Name = "dataRole"
+        Me.dataRole.Size = New System.Drawing.Size(93, 17)
+        Me.dataRole.TabIndex = 3
+        Me.dataRole.Text = "Nom du rôle U"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI Variable Display", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.White
+        Me.Label3.Location = New System.Drawing.Point(248, 6)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(122, 21)
+        Me.Label3.TabIndex = 2
+        Me.Label3.Text = "Rôle utilisateur :"
+        '
+        'dataUtilisateur
+        '
+        Me.dataUtilisateur.AutoSize = True
+        Me.dataUtilisateur.Font = New System.Drawing.Font("Segoe UI Variable Display", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataUtilisateur.ForeColor = System.Drawing.Color.White
+        Me.dataUtilisateur.Location = New System.Drawing.Point(94, 9)
+        Me.dataUtilisateur.Name = "dataUtilisateur"
+        Me.dataUtilisateur.Size = New System.Drawing.Size(105, 17)
+        Me.dataUtilisateur.TabIndex = 1
+        Me.dataUtilisateur.Text = "Nom / Prénom U"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI Variable Display", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.White
+        Me.Label1.Location = New System.Drawing.Point(6, 6)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(90, 21)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Utilisateur :"
         '
         'ImageList2
         '
@@ -285,14 +349,55 @@ Partial Class Form1
         Me.ImageList2.ImageSize = New System.Drawing.Size(16, 16)
         Me.ImageList2.TransparentColor = System.Drawing.Color.Transparent
         '
-        'PictureBox1
+        'inputObservations
         '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(480, 264)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(88, 89)
-        Me.PictureBox1.TabIndex = 8
-        Me.PictureBox1.TabStop = False
+        Me.inputObservations.BackColor = System.Drawing.SystemColors.Window
+        Me.inputObservations.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.inputObservations.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.inputObservations.Location = New System.Drawing.Point(3, 4)
+        Me.inputObservations.Name = "inputObservations"
+        Me.inputObservations.Size = New System.Drawing.Size(298, 19)
+        Me.inputObservations.TabIndex = 7
+        '
+        'declinerButton
+        '
+        Me.declinerButton.AccessibleRole = System.Windows.Forms.AccessibleRole.ScrollBar
+        Me.declinerButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.declinerButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.declinerButton.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.declinerButton.FlatAppearance.BorderColor = System.Drawing.Color.Black
+        Me.declinerButton.FlatAppearance.BorderSize = 0
+        Me.declinerButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.declinerButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.declinerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.declinerButton.Font = New System.Drawing.Font("Segoe UI Variable Display", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.declinerButton.ForeColor = System.Drawing.Color.Black
+        Me.declinerButton.Location = New System.Drawing.Point(748, 444)
+        Me.declinerButton.Name = "declinerButton"
+        Me.declinerButton.Size = New System.Drawing.Size(111, 23)
+        Me.declinerButton.TabIndex = 9
+        Me.declinerButton.Text = "Décliner"
+        Me.declinerButton.UseVisualStyleBackColor = False
+        '
+        'validButton
+        '
+        Me.validButton.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar
+        Me.validButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.validButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.validButton.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.validButton.FlatAppearance.BorderColor = System.Drawing.Color.Black
+        Me.validButton.FlatAppearance.BorderSize = 0
+        Me.validButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.validButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.validButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.validButton.Font = New System.Drawing.Font("Segoe UI Variable Display", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.validButton.ForeColor = System.Drawing.Color.Black
+        Me.validButton.Location = New System.Drawing.Point(631, 444)
+        Me.validButton.Name = "validButton"
+        Me.validButton.Size = New System.Drawing.Size(111, 23)
+        Me.validButton.TabIndex = 14
+        Me.validButton.Text = "Valider"
+        Me.validButton.UseVisualStyleBackColor = False
         '
         'Form1
         '
@@ -306,14 +411,16 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
-        Me.Panel3.ResumeLayout(False)
-        Me.Panel3.PerformLayout()
+        Me.Panel7.ResumeLayout(False)
+        Me.Panel7.PerformLayout()
+        Me.Panel5.ResumeLayout(False)
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
-        Me.Panel5.ResumeLayout(False)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel3.ResumeLayout(False)
+        Me.Panel3.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -325,18 +432,25 @@ Partial Class Form1
     Friend WithEvents ReportButton As Button
     Friend WithEvents Panel2 As Panel
     Friend WithEvents Panel3 As Panel
-    Friend WithEvents Label4 As Label
+    Friend WithEvents dataRole As Label
     Friend WithEvents Label3 As Label
-    Friend WithEvents Label2 As Label
+    Friend WithEvents dataUtilisateur As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents Label6 As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents Panel4 As Panel
-    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents inputNomPatient As TextBox
     Friend WithEvents ReportDate As DateTimePicker
     Friend WithEvents Label7 As Label
     Friend WithEvents Panel6 As Panel
     Friend WithEvents Panel5 As Panel
     Friend WithEvents ImageList2 As ImageList
-    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents Label8 As Label
+    Friend WithEvents Label10 As Label
+    Friend WithEvents Label9 As Label
+    Friend WithEvents Panel7 As Panel
+    Friend WithEvents MedicSelect As CheckedListBox
+    Friend WithEvents inputObservations As TextBox
+    Friend WithEvents validButton As Button
+    Friend WithEvents declinerButton As Button
 End Class
