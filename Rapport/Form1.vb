@@ -39,7 +39,7 @@
         End If
     End Sub
 
-    Private Sub logout_Click(sender As Object, e As EventArgs) Handles logout.Click
+    Private Sub logout_Click(sender As Object, e As EventArgs)
         MessageBox.Show("Vous avez été deconnecté !")
     End Sub
 End Class
