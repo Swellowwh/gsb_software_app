@@ -12,13 +12,13 @@
     Private Sub btnConnect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConnect.Click
         ' Vérifier si les champs sont remplis
         If txtEmail.Text = "" Then
-            MessageBox.Show("Veuillez entrer un nom d'utilisateur", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Veuillez entrer un nom d'utilisateur !", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             txtEmail.Focus()
             Return
         End If
 
         If txtPassword.Text = "" Then
-            MessageBox.Show("Veuillez entrer un mot de passe", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Veuillez entrer un mot de passe !", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             txtPassword.Focus()
             Return
         End If
