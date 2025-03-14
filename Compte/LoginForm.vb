@@ -55,14 +55,14 @@
                 mainForm.UserName = userNom & " " & userPrenom
                 mainForm.UserRole = userRole
 
-                MessageBox.Show("Bienvenue " & userNom & " " & userPrenom, "Connexion réussie", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show("Bienvenue " & userNom & " " & userPrenom, "Connexion réussie !", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ' Cacher le formulaire de connexion et afficher le formulaire principal
                 Me.Hide()
                 mainForm.Show()
             Else
                 ' Utilisateur non trouvé
-                MessageBox.Show("Nom d'utilisateur ou mot de passe incorrect", "Erreur d'authentification", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("Nom d'utilisateur ou mot de passe incorrect !", "Erreur d'authentification", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 txtPassword.Text = ""
                 txtPassword.Focus()
             End If
