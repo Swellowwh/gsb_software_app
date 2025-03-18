@@ -5,8 +5,6 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ConnexionOracle", "ConnexionOracle\ConnexionOracle.vbproj", "{90AC7194-C09F-4815-A00C-289D956E8E98}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Visite", "visite\Visite.vbproj", "{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Compte", "Compte\Compte.vbproj", "{B8849D2B-D324-4802-9CB3-72AA4E26F96E}"
 EndProject
 Global
@@ -25,14 +23,6 @@ Global
 		{90AC7194-C09F-4815-A00C-289D956E8E98}.Release|Any CPU.Build.0 = Release|x86
 		{90AC7194-C09F-4815-A00C-289D956E8E98}.Release|x86.ActiveCfg = Release|x86
 		{90AC7194-C09F-4815-A00C-289D956E8E98}.Release|x86.Build.0 = Release|x86
-		{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}.Debug|x86.Build.0 = Debug|Any CPU
-		{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}.Release|x86.ActiveCfg = Release|Any CPU
-		{854EB2A0-1390-472D-8DA3-2AD1EF6C56DF}.Release|x86.Build.0 = Release|Any CPU
 		{B8849D2B-D324-4802-9CB3-72AA4E26F96E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8849D2B-D324-4802-9CB3-72AA4E26F96E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8849D2B-D324-4802-9CB3-72AA4E26F96E}.Debug|x86.ActiveCfg = Debug|Any CPU

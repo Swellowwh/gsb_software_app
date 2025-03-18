@@ -73,6 +73,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateRapport.Designer.vb">
+      <DependentUpon>CreateRapport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CreateRapport.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LesRapports.Designer.vb">
       <DependentUpon>LesRapports.vb</DependentUpon>
     </Compile>
@@ -102,6 +108,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CreateRapport.resx">
+      <DependentUpon>CreateRapport.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LesRapports.resx">
       <DependentUpon>LesRapports.vb</DependentUpon>
     </EmbeddedResource>

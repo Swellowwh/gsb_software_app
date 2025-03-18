@@ -272,8 +272,20 @@ Public Class LesRapports
         Me.Close()
     End Sub
 
+    Private Sub btnAjouter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAjouter.Click
+        ' Créer une nouvelle instance du formulaire CreateRapport
+        Dim frmCreateRapport As New CreateRapport()
+
+        ' Afficher le formulaire
+        frmCreateRapport.Show()
+    End Sub
+
     ' Redimensionne les contrôles lorsque la fenêtre est redimensionnée
     Private Sub LesRapports_Resize(sender As Object, e As EventArgs) Handles Me.Resize
         AjusterLayout()
+    End Sub
+
+    Private Sub dgvRapports_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRapports.CellContentClick
+
     End Sub
 End Class

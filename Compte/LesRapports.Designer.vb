@@ -21,6 +21,7 @@ Partial Class LesRapports
     Private Sub InitializeComponent()
         Me.dgvRapports = New System.Windows.Forms.DataGridView()
         Me.pnlActions = New System.Windows.Forms.Panel()
+        Me.btnAjouter = New System.Windows.Forms.Button()
         Me.btnFermer = New System.Windows.Forms.Button()
         Me.lblTitre = New System.Windows.Forms.Label()
         CType(Me.dgvRapports, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -32,9 +33,6 @@ Partial Class LesRapports
         Me.dgvRapports.AllowUserToAddRows = False
         Me.dgvRapports.AllowUserToDeleteRows = False
         Me.dgvRapports.AllowUserToResizeRows = False
-        Me.dgvRapports.AlternatingRowsDefaultCellStyle = New System.Windows.Forms.DataGridViewCellStyle() With {
-            .BackColor = System.Drawing.Color.LightGray
-        }
         Me.dgvRapports.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvRapports.BackgroundColor = System.Drawing.Color.White
         Me.dgvRapports.BorderStyle = System.Windows.Forms.BorderStyle.None
@@ -51,6 +49,7 @@ Partial Class LesRapports
         'pnlActions
         '
         Me.pnlActions.BackColor = System.Drawing.Color.LightGray
+        Me.pnlActions.Controls.Add(Me.btnAjouter)
         Me.pnlActions.Controls.Add(Me.btnFermer)
         Me.pnlActions.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlActions.Location = New System.Drawing.Point(0, 540)
@@ -58,6 +57,15 @@ Partial Class LesRapports
         Me.pnlActions.Padding = New System.Windows.Forms.Padding(10)
         Me.pnlActions.Size = New System.Drawing.Size(900, 60)
         Me.pnlActions.TabIndex = 2
+        '
+        'btnAjouter
+        '
+        Me.btnAjouter.Location = New System.Drawing.Point(20, 15)
+        Me.btnAjouter.Name = "btnAjouter"
+        Me.btnAjouter.Size = New System.Drawing.Size(140, 30)
+        Me.btnAjouter.TabIndex = 4
+        Me.btnAjouter.Text = "Ajouter un rapport"
+        Me.btnAjouter.UseVisualStyleBackColor = True
         '
         'btnFermer
         '
@@ -95,10 +103,12 @@ Partial Class LesRapports
         CType(Me.dgvRapports, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlActions.ResumeLayout(False)
         Me.ResumeLayout(False)
+
     End Sub
 
     Friend WithEvents dgvRapports As DataGridView
     Friend WithEvents pnlActions As Panel
     Friend WithEvents btnFermer As Button
     Friend WithEvents lblTitre As Label
+    Friend WithEvents btnAjouter As Button
 End Class
