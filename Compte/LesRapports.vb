@@ -83,7 +83,7 @@ Public Class LesRapports
 
                 ' Tester la requête pour vérifier qu'il y a des données
                 ' IMPORTANT: Vérifiez que le nom de la table est correct (majuscules/minuscules)
-                Using cmd As New OdbcCommand("SELECT COUNT(*) FROM RAPPORTDEVISITE", conn)
+                Using cmd As New OdbcCommand("SELECT COUNT(*) FROM RAPPORT_DE_VISITE", conn)
                     Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
                     MessageBox.Show("Nombre de rapports dans la table: " & count, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End Using
@@ -107,7 +107,7 @@ Public Class LesRapports
 
             ' Configurer la commande pour récupérer les rapports
             ' Option: Filtrer les rapports en fonction de l'utilisateur connecté si nécessaire
-            Dim sqlQuery As String = "SELECT * FROM RAPPORTDEVISITE"
+            Dim sqlQuery As String = "SELECT * FROM RAPPORT_DE_VISITE"
 
             ' Si l'utilisateur n'est pas administrateur, ne montrer que ses propres rapports
             If Not String.IsNullOrEmpty(UserID) AndAlso UserRole <> "ADMIN" Then
@@ -202,38 +202,73 @@ Public Class LesRapports
         End If
     End Sub
 
-    ' Méthode pour gérer le clic sur une cellule du DataGridView
     Private Sub dgvRapports_CellClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvRapports.CellClick
-        ' IMPORTANT: Vérifier si le clic est sur le bouton de suppression
-        If e.ColumnIndex >= 0 AndAlso e.RowIndex >= 0 Then
-            Dim clickedColumn = dgvRapports.Columns(e.ColumnIndex)
-            If clickedColumn.Name = "btnSupprimer" Then
-                ' Vérifier que les colonnes existent avant d'accéder à leurs valeurs
-                If dgvRapports.Columns.Count > 3 AndAlso dgvRapports.Rows(e.RowIndex).Cells(0).Value IsNot Nothing Then
-                    ' Récupérer les informations du rapport à supprimer
-                    Dim idVisite As Integer = Convert.ToInt32(dgvRapports.Rows(e.RowIndex).Cells(0).Value)
-                    Dim motif As String
+        Try
+            ' Vérifier si le clic est sur le bouton de suppression et sur une ligne valide
+            If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+                ' Vérifier si la colonne cliquée est la colonne "Supprimer"
+                If dgvRapports.Columns(e.ColumnIndex).Name = "btnSupprimer" Then
+                    ' Récupérer l'ID de la visite à supprimer
+                    Dim idVisite As Integer
 
-                    ' IMPORTANT: Protéger contre les valeurs nulles
-                    If dgvRapports.Rows(e.RowIndex).Cells(3).Value IsNot Nothing Then
-                        motif = dgvRapports.Rows(e.RowIndex).Cells(3).Value.ToString()
-                    Else
-                        motif = "inconnu"
+                    ' Essayer de trouver la colonne ID_RAPPORT
+                    Dim idColumnIndex As Integer = -1
+                    For i As Integer = 0 To dgvRapports.Columns.Count - 1
+                        If dgvRapports.Columns(i).Name.ToUpper() = "ID_RAPPORT" Then
+                            idColumnIndex = i
+                            Exit For
+                        End If
+                    Next
+
+                    ' Vérifier qu'on a trouvé la colonne ID_RAPPORT
+                    If idColumnIndex = -1 Then
+                        MessageBox.Show("Impossible de trouver la colonne ID_RAPPORT.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return
                     End If
 
-                    ' Demander confirmation
+                    ' Vérifier que la cellule contient une valeur
+                    If dgvRapports.Rows(e.RowIndex).Cells(idColumnIndex).Value Is Nothing Then
+                        MessageBox.Show("La cellule ID_RAPPORT ne contient pas de valeur.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return
+                    End If
+
+                    ' Récupérer et convertir la valeur
+                    Dim idValue As String = dgvRapports.Rows(e.RowIndex).Cells(idColumnIndex).Value.ToString()
+                    If Not Integer.TryParse(idValue, idVisite) Then
+                        MessageBox.Show("La valeur '" & idValue & "' n'est pas un identifiant valide.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return
+                    End If
+
+                    ' Récupérer le motif pour l'afficher dans le message de confirmation
+                    Dim motifColumnIndex As Integer = -1
+                    For i As Integer = 0 To dgvRapports.Columns.Count - 1
+                        If dgvRapports.Columns(i).Name.ToUpper() = "MOTIF_VISITE" Then
+                            motifColumnIndex = i
+                            Exit For
+                        End If
+                    Next
+
+                    Dim motif As String = "inconnu"
+                    If motifColumnIndex >= 0 AndAlso dgvRapports.Rows(e.RowIndex).Cells(motifColumnIndex).Value IsNot Nothing Then
+                        motif = dgvRapports.Rows(e.RowIndex).Cells(motifColumnIndex).Value.ToString()
+                    End If
+
+                    ' Demander confirmation avant suppression
                     Dim result As DialogResult = MessageBox.Show(
-                        "Voulez-vous vraiment supprimer le rapport de visite '" & motif & "' ?",
-                        "Confirmation de suppression",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question)
+                    "Voulez-vous vraiment supprimer le rapport de visite '" & motif & "' ?",
+                    "Confirmation de suppression",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question)
 
                     If result = DialogResult.Yes Then
+                        ' Supprimer le rapport
                         SupprimerRapport(idVisite)
                     End If
                 End If
             End If
-        End If
+        Catch ex As Exception
+            MessageBox.Show("Erreur lors de la suppression: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     ' Méthode pour supprimer un rapport
@@ -245,8 +280,9 @@ Public Class LesRapports
 
                 ' Configurer la commande pour supprimer le rapport
                 ' IMPORTANT: Utiliser un paramètre pour éviter les injections SQL
-                Using deleteCommand As New OdbcCommand("DELETE FROM RAPPORTDEVISITE WHERE ID_VISITE = ?", deleteConnection)
-                    deleteCommand.Parameters.AddWithValue("@ID", idVisite)
+                Using deleteCommand As New OdbcCommand("DELETE FROM RAPPORT_DE_VISITE WHERE ID_RAPPORT = ?", deleteConnection)
+                    ' Pour ODBC, il faut juste ajouter le paramètre sans le nommer
+                    deleteCommand.Parameters.AddWithValue("?", idVisite)
 
                     ' Exécuter la requête
                     Dim nbRows As Integer = deleteCommand.ExecuteNonQuery()
@@ -276,8 +312,16 @@ Public Class LesRapports
         ' Créer une nouvelle instance du formulaire CreateRapport
         Dim frmCreateRapport As New CreateRapport()
 
-        ' Afficher le formulaire
-        frmCreateRapport.Show()
+        ' Passer les informations de l'utilisateur connecté
+        frmCreateRapport.UserID = "1"  ' Forcer l'ID à 1 pour votre test
+        frmCreateRapport.UserName = "Visiteur Test"
+        frmCreateRapport.UserRole = "Visiteur"
+
+        ' Afficher le formulaire en tant que dialogue modal
+        frmCreateRapport.ShowDialog()
+
+        ' Après la fermeture du formulaire, recharger les rapports
+        ChargerRapports()
     End Sub
 
     ' Redimensionne les contrôles lorsque la fenêtre est redimensionnée

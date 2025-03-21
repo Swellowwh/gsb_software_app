@@ -32,7 +32,7 @@
 
             ' Vérifier si l'utilisateur existe dans la base de données
             myCommand.Connection = myConnection
-            myCommand.CommandText = "SELECT ID_USER, NOM, PRENOM, ID_ROLE FROM UTILISATEUR WHERE EMAIL = '" & txtEmail.Text & "'"
+            myCommand.CommandText = "SELECT ID_USER, NOM, PRENOM, ID_ROLE FROM UTILISATEUR WHERE EMAIL = '" & txtEmail.Text & "' AND MOT_DE_PASSE = '" & txtPassword.Text & "'"
             myReader = myCommand.ExecuteReader()
 
             If myReader.Read() Then
