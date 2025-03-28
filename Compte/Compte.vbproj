@@ -112,6 +112,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Praticien.Designer.vb">
+      <DependentUpon>Praticien.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Praticien.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CreateRapport.resx">
@@ -131,6 +137,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Praticien.resx">
+      <DependentUpon>Praticien.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

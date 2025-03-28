@@ -33,7 +33,7 @@ Partial Class LoginForm
         Me.lblEmail.AutoSize = True
         Me.lblEmail.Location = New System.Drawing.Point(53, 74)
         Me.lblEmail.Name = "lblEmail"
-        Me.lblEmail.Size = New System.Drawing.Size(93, 13)
+        Me.lblEmail.Size = New System.Drawing.Size(85, 13)
         Me.lblEmail.TabIndex = 0
         Me.lblEmail.Text = "Email utilisateur :"
         '
@@ -42,7 +42,7 @@ Partial Class LoginForm
         Me.lblPassword.AutoSize = True
         Me.lblPassword.Location = New System.Drawing.Point(53, 128)
         Me.lblPassword.Name = "lblPassword"
-        Me.lblPassword.Size = New System.Drawing.Size(80, 13)
+        Me.lblPassword.Size = New System.Drawing.Size(77, 13)
         Me.lblPassword.TabIndex = 1
         Me.lblPassword.Text = "Mot de passe :"
         '
@@ -85,7 +85,7 @@ Partial Class LoginForm
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(52, 29)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(193, 20)
+        Me.Label1.Size = New System.Drawing.Size(147, 20)
         Me.Label1.TabIndex = 6
         Me.Label1.Text = "Connexion - GSB"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopCenter

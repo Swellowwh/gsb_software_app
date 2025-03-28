@@ -16,7 +16,7 @@ Public Class EditRapport
     Public Property RapportID As Integer
     Public Property DateVisite As DateTime
     Public Property MotifVisite As String
-    Public Property BilanVisite As String
+    Public Property ContenuVisite As String ' Renommé de BilanVisite à ContenuVisite
 
     ' Cette méthode s'exécute lorsque le formulaire est chargé
     Private Sub EditRapport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -61,16 +61,16 @@ Public Class EditRapport
                         txtMotif.Text = MotifVisite
                     End If
 
-                    ' Bilan de visite (si cette colonne existe dans la base de données)
+                    ' Contenu de visite (anciennement Bilan)
                     Try
-                        Dim bilanOrdinal As Integer = reader.GetOrdinal("BILAN")
-                        If Not reader.IsDBNull(bilanOrdinal) Then
-                            BilanVisite = reader.GetString(bilanOrdinal)
-                            txtBilan.Text = BilanVisite
+                        Dim contenuOrdinal As Integer = reader.GetOrdinal("CONTENU_VISITE")
+                        If Not reader.IsDBNull(contenuOrdinal) Then
+                            ContenuVisite = reader.GetString(contenuOrdinal)
+                            txtBilan.Text = ContenuVisite ' Utilise txtBilan comme contrôle mais pour le contenu
                         End If
                     Catch ex As Exception
-                        ' La colonne BILAN n'existe peut-être pas
-                        Console.WriteLine("Info: La colonne BILAN n'existe peut-être pas: " & ex.Message)
+                        ' La colonne CONTENU_VISITE n'existe peut-être pas
+                        Console.WriteLine("Info: La colonne CONTENU_VISITE n'existe peut-être pas: " & ex.Message)
                     End Try
                 Else
                     MessageBox.Show("Aucun rapport trouvé avec l'ID " & RapportID, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -102,27 +102,9 @@ Public Class EditRapport
             myConnection.ConnectionString = connString
             myConnection.Open()
 
-            ' Déterminer si nous devons inclure le bilan dans la mise à jour
-            Dim includeBilan As Boolean = False
-            Try
-                ' Vérifier si la colonne BILAN existe dans la table
-                Using checkCmd As New OdbcCommand("SELECT COUNT(*) FROM USER_TAB_COLUMNS WHERE TABLE_NAME = 'RAPPORT_DE_VISITE' AND COLUMN_NAME = 'BILAN'", myConnection)
-                    Dim count As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
-                    includeBilan = (count > 0)
-                End Using
-            Catch ex As Exception
-                ' En cas d'erreur, nous supposons que la colonne n'existe pas
-                includeBilan = False
-                Console.WriteLine("Impossible de vérifier l'existence de la colonne BILAN: " & ex.Message)
-            End Try
-
             ' Créer la commande SQL pour mettre à jour le rapport
-            Dim sqlQuery As String
-            If includeBilan Then
-                sqlQuery = "UPDATE RAPPORT_DE_VISITE SET DATE_VISITE = ?, MOTIF_VISITE = ?, BILAN = ? WHERE ID_RAPPORT = ?"
-            Else
-                sqlQuery = "UPDATE RAPPORT_DE_VISITE SET DATE_VISITE = ?, MOTIF_VISITE = ? WHERE ID_RAPPORT = ?"
-            End If
+            ' On inclut toujours le contenu de la visite
+            Dim sqlQuery As String = "UPDATE RAPPORT_DE_VISITE SET DATE_VISITE = ?, MOTIF_VISITE = ?, CONTENU_VISITE = ? WHERE ID_RAPPORT = ?"
 
             myCommand.Connection = myConnection
             myCommand.CommandText = sqlQuery
@@ -131,13 +113,8 @@ Public Class EditRapport
             ' Ajouter les paramètres
             myCommand.Parameters.AddWithValue("?", dtpDateVisite.Value.Date)
             myCommand.Parameters.AddWithValue("?", txtMotif.Text.Trim())
-
-            If includeBilan Then
-                myCommand.Parameters.AddWithValue("?", txtBilan.Text.Trim())
-                myCommand.Parameters.AddWithValue("?", RapportID)
-            Else
-                myCommand.Parameters.AddWithValue("?", RapportID)
-            End If
+            myCommand.Parameters.AddWithValue("?", txtBilan.Text.Trim()) ' Utilise txtBilan pour le contenu
+            myCommand.Parameters.AddWithValue("?", RapportID)
 
             ' Exécuter la mise à jour
             Dim rowsAffected As Integer = myCommand.ExecuteNonQuery()

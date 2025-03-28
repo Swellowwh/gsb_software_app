@@ -239,7 +239,7 @@ Public Class LesRapports
 
     Private Sub dgvRapports_CellClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvRapports.CellClick
         Try
-            ' Vérifier si le clic est sur le bouton de suppression et sur une ligne valide
+            ' Vérifier si le clic est sur une ligne valide et sur une colonne de bouton
             If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
                 ' Vérifier si la colonne cliquée est la colonne "Supprimer"
                 If dgvRapports.Columns(e.ColumnIndex).Name = "btnSupprimer" Then
@@ -290,18 +290,109 @@ Public Class LesRapports
 
                     ' Demander confirmation avant suppression
                     Dim result As DialogResult = MessageBox.Show(
-                    "Voulez-vous vraiment supprimer le rapport de visite '" & motif & "' ?",
-                    "Confirmation de suppression",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question)
+                "Voulez-vous vraiment supprimer le rapport de visite '" & motif & "' ?",
+                "Confirmation de suppression",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question)
 
                     If result = DialogResult.Yes Then
                         ' Supprimer le rapport
                         SupprimerRapport(idVisite)
                     End If
+
+                    ' Vérifier si la colonne cliquée est la colonne "Modifier"
                 ElseIf dgvRapports.Columns(e.ColumnIndex).Name = "btnModifier" Then
-                    ' Code pour traiter le bouton Modifier
-                    ' À implémenter selon les besoins
+                    ' Récupérer l'ID du rapport à modifier
+                    Dim idRapport As Integer
+
+                    ' Trouver la colonne ID_RAPPORT
+                    Dim idColumnIndex As Integer = -1
+                    For i As Integer = 0 To dgvRapports.Columns.Count - 1
+                        If dgvRapports.Columns(i).Name.ToUpper() = "ID_RAPPORT" Then
+                            idColumnIndex = i
+                            Exit For
+                        End If
+                    Next
+
+                    ' Vérifier qu'on a trouvé la colonne ID_RAPPORT
+                    If idColumnIndex = -1 Then
+                        MessageBox.Show("Impossible de trouver la colonne ID_RAPPORT.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return
+                    End If
+
+                    ' Vérifier que la cellule contient une valeur
+                    If dgvRapports.Rows(e.RowIndex).Cells(idColumnIndex).Value Is Nothing Then
+                        MessageBox.Show("La cellule ID_RAPPORT ne contient pas de valeur.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return
+                    End If
+
+                    ' Récupérer et convertir la valeur
+                    Dim idValue As String = dgvRapports.Rows(e.RowIndex).Cells(idColumnIndex).Value.ToString()
+                    If Not Integer.TryParse(idValue, idRapport) Then
+                        MessageBox.Show("La valeur '" & idValue & "' n'est pas un identifiant valide.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return
+                    End If
+
+                    ' Récupérer la date, le motif et le contenu de la visite pour les passer au formulaire de modification
+                    Dim dateVisite As DateTime = DateTime.Now
+                    Dim motifVisite As String = String.Empty
+                    Dim contenuVisite As String = String.Empty
+
+                    ' Trouver les indices des colonnes nécessaires
+                    Dim dateColumnIndex As Integer = -1
+                    Dim motifColumnIndex As Integer = -1
+                    Dim contenuColumnIndex As Integer = -1
+
+                    For i As Integer = 0 To dgvRapports.Columns.Count - 1
+                        Select Case dgvRapports.Columns(i).Name.ToUpper()
+                            Case "DATE_VISITE"
+                                dateColumnIndex = i
+                            Case "MOTIF_VISITE"
+                                motifColumnIndex = i
+                            Case "CONTENU_VISITE"
+                                contenuColumnIndex = i
+                        End Select
+                    Next
+
+                    ' Récupérer les valeurs si les colonnes existent
+                    If dateColumnIndex >= 0 AndAlso dgvRapports.Rows(e.RowIndex).Cells(dateColumnIndex).Value IsNot Nothing Then
+                        Try
+                            dateVisite = Convert.ToDateTime(dgvRapports.Rows(e.RowIndex).Cells(dateColumnIndex).Value)
+                        Catch ex As Exception
+                            ' Utiliser la date du jour si la conversion échoue
+                            Console.WriteLine("Erreur de conversion de date: " & ex.Message)
+                        End Try
+                    End If
+
+                    If motifColumnIndex >= 0 AndAlso dgvRapports.Rows(e.RowIndex).Cells(motifColumnIndex).Value IsNot Nothing Then
+                        motifVisite = dgvRapports.Rows(e.RowIndex).Cells(motifColumnIndex).Value.ToString()
+                    End If
+
+                    If contenuColumnIndex >= 0 AndAlso dgvRapports.Rows(e.RowIndex).Cells(contenuColumnIndex).Value IsNot Nothing Then
+                        contenuVisite = dgvRapports.Rows(e.RowIndex).Cells(contenuColumnIndex).Value.ToString()
+                    End If
+
+                    ' Créer une nouvelle instance du formulaire EditRapport
+                    Dim frmEditRapport As New EditRapport()
+
+                    ' Passer les informations de l'utilisateur connecté
+                    frmEditRapport.UserID = Me.UserID
+                    frmEditRapport.UserName = Me.UserName
+                    frmEditRapport.UserRole = Me.UserRole
+
+                    ' Passer les informations du rapport à modifier
+                    frmEditRapport.RapportID = idRapport
+                    frmEditRapport.DateVisite = dateVisite
+                    frmEditRapport.MotifVisite = motifVisite
+                    frmEditRapport.ContenuVisite = contenuVisite  ' Utiliser contenuVisite au lieu de bilanVisite
+
+                    ' Afficher le formulaire en tant que dialogue modal
+                    Dim result As DialogResult = frmEditRapport.ShowDialog()
+
+                    ' Si le dialogue est fermé avec OK (modification effectuée), recharger les rapports
+                    If result = DialogResult.OK Then
+                        ChargerRapports()
+                    End If
                 End If
             End If
         Catch ex As Exception

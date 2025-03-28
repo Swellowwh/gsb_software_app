@@ -71,20 +71,33 @@
                 myReader.Close()
                 myConnection.Close()
 
-                ' Créer une instance du formulaire LesRapports
-                Dim mainForm As New LesRapports()
-
-                ' Définir les propriétés de l'utilisateur
-                mainForm.UserID = visitorID ' Utiliser l'ID du visiteur si trouvé
-                mainForm.UserName = userNom & " " & userPrenom
-                mainForm.UserRole = userRoleName ' Utiliser le nom du rôle au lieu de l'ID
-
+                ' Message de bienvenue
                 MessageBox.Show("Bienvenue " & userNom & " " & userPrenom & " (" & userRoleName & ")",
                                "Connexion réussie !", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-                ' Cacher le formulaire de connexion et afficher le formulaire principal
-                Me.Hide()
-                mainForm.Show()
+                ' Vérifier si l'utilisateur a le rôle "praticien" et rediriger vers le formulaire approprié
+                If userRoleName.ToLower() = "praticien" Then
+                    ' Rediriger vers le formulaire Praticien si l'utilisateur est un praticien
+                    Dim praticienForm As New Praticien()
+
+                    ' Vous pouvez également passer des informations utilisateur au formulaire Praticien si nécessaire
+                    ' Exemple: praticienForm.UserID = userID
+                    ' Exemple: praticienForm.UserName = userNom & " " & userPrenom
+
+                    Me.Hide()
+                    praticienForm.Show()
+                Else
+                    ' Rediriger vers le formulaire LesRapports pour les autres rôles
+                    Dim mainForm As New LesRapports()
+
+                    ' Définir les propriétés de l'utilisateur
+                    mainForm.UserID = visitorID ' Utiliser l'ID du visiteur si trouvé
+                    mainForm.UserName = userNom & " " & userPrenom
+                    mainForm.UserRole = userRoleName ' Utiliser le nom du rôle au lieu de l'ID
+
+                    Me.Hide()
+                    mainForm.Show()
+                End If
             Else
                 ' Utilisateur non trouvé
                 MessageBox.Show("Nom d'utilisateur ou mot de passe incorrect !",
@@ -111,5 +124,9 @@
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         ' Fermer l'application
         Application.Exit()
+    End Sub
+
+    Private Sub lblPassword_Click(sender As Object, e As EventArgs) Handles lblPassword.Click
+        ' Ce gestionnaire d'événements est vide et peut être supprimé s'il n'est pas utilisé
     End Sub
 End Class
