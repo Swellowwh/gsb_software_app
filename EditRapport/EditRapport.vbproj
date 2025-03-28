@@ -1,14 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B8849D2B-D324-4802-9CB3-72AA4E26F96E}</ProjectGuid>
+    <ProjectGuid>{DFD96806-BF9E-4BC1-93A9-B4A0BC2DC0BF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Compte.My.MyApplication</StartupObject>
-    <RootNamespace>Compte</RootNamespace>
-    <AssemblyName>Compte</AssemblyName>
+    <StartupObject>EditRapport.My.MyApplication</StartupObject>
+    <RootNamespace>EditRapport</RootNamespace>
+    <AssemblyName>EditRapport</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -22,7 +22,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>Compte.xml</DocumentationFile>
+    <DocumentationFile>EditRapport.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,7 +32,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>Compte.xml</DocumentationFile>
+    <DocumentationFile>EditRapport.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -73,28 +73,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateRapport.Designer.vb">
-      <DependentUpon>CreateRapport.vb</DependentUpon>
-    </Compile>
-    <Compile Include="CreateRapport.vb">
+    <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditRapport.Designer.vb">
-      <DependentUpon>EditRapport.vb</DependentUpon>
-    </Compile>
-    <Compile Include="EditRapport.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LesRapports.Designer.vb">
-      <DependentUpon>LesRapports.vb</DependentUpon>
-    </Compile>
-    <Compile Include="LesRapports.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LoginForm.Designer.vb">
-      <DependentUpon>LoginForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="LoginForm.vb">
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -114,18 +97,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CreateRapport.resx">
-      <DependentUpon>CreateRapport.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EditRapport.resx">
-      <DependentUpon>EditRapport.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LesRapports.resx">
-      <DependentUpon>LesRapports.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LoginForm.resx">
-      <DependentUpon>LoginForm.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>

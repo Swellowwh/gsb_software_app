@@ -24,8 +24,12 @@ Partial Class LesRapports
         Me.btnAjouter = New System.Windows.Forms.Button()
         Me.btnFermer = New System.Windows.Forms.Button()
         Me.lblTitre = New System.Windows.Forms.Label()
+        Me.pnlUserInfo = New System.Windows.Forms.Panel()
+        Me.lblUserInfo = New System.Windows.Forms.Label()
+        Me.lblUserRole = New System.Windows.Forms.Label()
         CType(Me.dgvRapports, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlActions.SuspendLayout()
+        Me.pnlUserInfo.SuspendLayout()
         Me.SuspendLayout()
         '
         'dgvRapports
@@ -37,13 +41,13 @@ Partial Class LesRapports
         Me.dgvRapports.BackgroundColor = System.Drawing.Color.White
         Me.dgvRapports.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvRapports.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvRapports.Location = New System.Drawing.Point(0, 50)
+        Me.dgvRapports.Location = New System.Drawing.Point(0, 80)
         Me.dgvRapports.MultiSelect = False
         Me.dgvRapports.Name = "dgvRapports"
         Me.dgvRapports.ReadOnly = True
         Me.dgvRapports.RowHeadersVisible = False
         Me.dgvRapports.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvRapports.Size = New System.Drawing.Size(900, 490)
+        Me.dgvRapports.Size = New System.Drawing.Size(900, 460)
         Me.dgvRapports.TabIndex = 0
         '
         'pnlActions
@@ -86,8 +90,38 @@ Partial Class LesRapports
         Me.lblTitre.Padding = New System.Windows.Forms.Padding(10)
         Me.lblTitre.Size = New System.Drawing.Size(900, 50)
         Me.lblTitre.TabIndex = 3
-        Me.lblTitre.Text = "Synthèse des visites"
+        Me.lblTitre.Text = "Synthèse des visites de"
         Me.lblTitre.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'pnlUserInfo
+        '
+        Me.pnlUserInfo.BackColor = System.Drawing.Color.LightBlue
+        Me.pnlUserInfo.Controls.Add(Me.lblUserInfo)
+        Me.pnlUserInfo.Controls.Add(Me.lblUserRole)
+        Me.pnlUserInfo.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlUserInfo.Location = New System.Drawing.Point(0, 50)
+        Me.pnlUserInfo.Name = "pnlUserInfo"
+        Me.pnlUserInfo.Padding = New System.Windows.Forms.Padding(10, 5, 10, 5)
+        Me.pnlUserInfo.Size = New System.Drawing.Size(900, 30)
+        Me.pnlUserInfo.TabIndex = 4
+        '
+        'lblUserInfo
+        '
+        Me.lblUserInfo.AutoSize = True
+        Me.lblUserInfo.Location = New System.Drawing.Point(13, 8)
+        Me.lblUserInfo.Name = "lblUserInfo"
+        Me.lblUserInfo.Size = New System.Drawing.Size(107, 13)
+        Me.lblUserInfo.TabIndex = 0
+        Me.lblUserInfo.Text = "Utilisateur connecté: "
+        '
+        'lblUserRole
+        '
+        Me.lblUserRole.AutoSize = True
+        Me.lblUserRole.Location = New System.Drawing.Point(250, 8)
+        Me.lblUserRole.Name = "lblUserRole"
+        Me.lblUserRole.Size = New System.Drawing.Size(32, 13)
+        Me.lblUserRole.TabIndex = 1
+        Me.lblUserRole.Text = "Rôle: "
         '
         'LesRapports
         '
@@ -95,6 +129,7 @@ Partial Class LesRapports
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(900, 600)
         Me.Controls.Add(Me.dgvRapports)
+        Me.Controls.Add(Me.pnlUserInfo)
         Me.Controls.Add(Me.lblTitre)
         Me.Controls.Add(Me.pnlActions)
         Me.Name = "LesRapports"
@@ -102,6 +137,8 @@ Partial Class LesRapports
         Me.Text = "Consultation des rapports de visite"
         CType(Me.dgvRapports, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlActions.ResumeLayout(False)
+        Me.pnlUserInfo.ResumeLayout(False)
+        Me.pnlUserInfo.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -111,4 +148,7 @@ Partial Class LesRapports
     Friend WithEvents btnFermer As Button
     Friend WithEvents lblTitre As Label
     Friend WithEvents btnAjouter As Button
+    Friend WithEvents pnlUserInfo As Panel
+    Friend WithEvents lblUserInfo As Label
+    Friend WithEvents lblUserRole As Label
 End Class

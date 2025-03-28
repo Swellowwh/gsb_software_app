@@ -31,8 +31,18 @@
             myConnection.Open()
 
             ' Vérifier si l'utilisateur existe dans la base de données
+            ' Modifier la requête pour récupérer également le nom du rôle avec une jointure
             myCommand.Connection = myConnection
-            myCommand.CommandText = "SELECT ID_USER, NOM, PRENOM, ID_ROLE FROM UTILISATEUR WHERE EMAIL = '" & txtEmail.Text & "' AND MOT_DE_PASSE = '" & txtPassword.Text & "'"
+            myCommand.CommandText = "SELECT U.ID_USER, U.NOM, U.PRENOM, U.ID_ROLE, R.NOM_ROLE " &
+                                   "FROM UTILISATEUR U " &
+                                   "JOIN ROLE R ON U.ID_ROLE = R.ID_ROLE " &
+                                   "WHERE U.EMAIL = ? AND U.MOT_DE_PASSE = ?"
+
+            ' Utiliser des paramètres pour éviter les injections SQL
+            myCommand.Parameters.Clear()
+            myCommand.Parameters.AddWithValue("?", txtEmail.Text)
+            myCommand.Parameters.AddWithValue("?", txtPassword.Text)
+
             myReader = myCommand.ExecuteReader()
 
             If myReader.Read() Then
@@ -40,35 +50,52 @@
                 Dim userID As Integer = myReader.GetInt32(0)
                 Dim userNom As String = myReader.GetString(1)
                 Dim userPrenom As String = myReader.GetString(2)
-                Dim userRole As Integer = myReader.GetInt32(3)
+                Dim userRoleID As Integer = myReader.GetInt32(3)
+                Dim userRoleName As String = myReader.GetString(4) ' Récupérer le nom du rôle
+
+                ' Récupérer l'ID du visiteur si l'utilisateur est un visiteur médical
+                Dim visitorID As String = String.Empty
+                myReader.Close() ' Fermer le reader actuel
+
+                ' Rechercher l'ID_VISITEUR correspondant à cet utilisateur
+                myCommand.CommandText = "SELECT ID_VISITEUR FROM VISITEUR_MEDICAL WHERE ID_USER = ?"
+                myCommand.Parameters.Clear()
+                myCommand.Parameters.AddWithValue("?", userID)
+                myReader = myCommand.ExecuteReader()
+
+                If myReader.Read() Then
+                    visitorID = myReader.GetString(0) ' Récupérer l'ID du visiteur
+                End If
 
                 ' Fermer le reader et la connexion avant de passer au formulaire suivant
                 myReader.Close()
                 myConnection.Close()
 
-                ' Créer une instance du formulaire HomeRapport
+                ' Créer une instance du formulaire LesRapports
                 Dim mainForm As New LesRapports()
 
-                ' Vérifier si les propriétés existent dans la classe HomeRapport et les définir
-                ' Décommentez ces lignes et assurez-vous que ces propriétés existent dans la classe LesRapports
-                mainForm.UserID = userID
+                ' Définir les propriétés de l'utilisateur
+                mainForm.UserID = visitorID ' Utiliser l'ID du visiteur si trouvé
                 mainForm.UserName = userNom & " " & userPrenom
-                mainForm.UserRole = userRole
+                mainForm.UserRole = userRoleName ' Utiliser le nom du rôle au lieu de l'ID
 
-                MessageBox.Show("Bienvenue " & userNom & " " & userPrenom, "Connexion réussie !", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show("Bienvenue " & userNom & " " & userPrenom & " (" & userRoleName & ")",
+                               "Connexion réussie !", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 ' Cacher le formulaire de connexion et afficher le formulaire principal
                 Me.Hide()
                 mainForm.Show()
             Else
                 ' Utilisateur non trouvé
-                MessageBox.Show("Nom d'utilisateur ou mot de passe incorrect !", "Erreur d'authentification", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("Nom d'utilisateur ou mot de passe incorrect !",
+                               "Erreur d'authentification", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 txtPassword.Text = ""
                 txtPassword.Focus()
             End If
         Catch ex As Exception
             ' Erreur de connexion à la base de données
-            MessageBox.Show("Erreur de connexion: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Erreur de connexion: " & ex.Message,
+                           "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             ' S'assurer que les ressources sont libérées
             If myReader IsNot Nothing AndAlso Not myReader.IsClosed Then

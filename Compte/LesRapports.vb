@@ -14,32 +14,35 @@ Public Class LesRapports
     Public Property UserName As String
     Public Property UserRole As String
 
+    ' Constructeur par défaut
+    Public Sub New()
+        ' Appel requis par le concepteur
+        InitializeComponent()
+    End Sub
+
+    ' Constructeur avec paramètres pour l'utilisateur
+    Public Sub New(ByVal userId As String, ByVal userName As String, ByVal userRole As String)
+        ' Appel requis par le concepteur
+        InitializeComponent()
+
+        ' Initialiser les propriétés utilisateur
+        Me.UserID = userId
+        Me.UserName = userName
+        Me.UserRole = userRole
+    End Sub
+
     ' Cette méthode s'exécute lorsque le formulaire est chargé
-    ' IMPORTANT: Vérifiez que cet événement est correctement lié au formulaire
     Private Sub LesRapports_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ' Afficher les informations de l'utilisateur connecté
         AfficherInfosUtilisateur()
-
-        ' Tester la connexion à la base de données
-        TesterConnexion()
 
         ' Charger les rapports au démarrage
         ChargerRapports()
     End Sub
 
-    ' Déclaration des contrôles supplémentaires pour le header utilisateur
-    Friend WithEvents lblUserInfo As Label
-    Friend WithEvents lblUserRole As Label
-    Friend WithEvents pnlUserInfo As Panel
-
     ' Méthode pour afficher les informations de l'utilisateur connecté
     Private Sub AfficherInfosUtilisateur()
         Try
-            ' Vérifier que les contrôles ont bien été initialisés
-            If lblUserInfo Is Nothing Or lblUserRole Is Nothing Then
-                Return
-            End If
-
             ' Vérifier que les informations utilisateur sont disponibles
             If Not String.IsNullOrEmpty(UserName) Then
                 ' Afficher le nom de l'utilisateur
@@ -49,9 +52,12 @@ Public Class LesRapports
                 If Not String.IsNullOrEmpty(UserRole) Then
                     lblUserRole.Text = "Rôle: " & UserRole
                 End If
+
+                ' Mettre à jour le titre avec le nom de l'utilisateur
+                lblTitre.Text = "Synthèse des visites de : " & UserName
             End If
 
-            ' Ajuster le layout pour tenir compte du nouveau panneau
+            ' Ajuster le layout
             AjusterLayout()
 
         Catch ex As Exception
@@ -60,36 +66,14 @@ Public Class LesRapports
         End Try
     End Sub
 
-    ' Méthode pour ajuster le layout après l'ajout du panneau utilisateur
+    ' Méthode pour ajuster le layout
     Private Sub AjusterLayout()
         Try
-            ' Ajuster la position et la taille de la grille pour tenir compte du panneau utilisateur
-            If dgvRapports IsNot Nothing And pnlUserInfo IsNot Nothing Then
-                dgvRapports.Location = New Point(0, lblTitre.Height + pnlUserInfo.Height)
-                dgvRapports.Height = Me.ClientSize.Height - lblTitre.Height - pnlUserInfo.Height - pnlActions.Height
-            End If
+            ' Ajuster la position et la taille de la grille
+            dgvRapports.Location = New Point(0, lblTitre.Height + pnlUserInfo.Height)
+            dgvRapports.Height = Me.ClientSize.Height - lblTitre.Height - pnlUserInfo.Height - pnlActions.Height
         Catch ex As Exception
             Console.WriteLine("Erreur lors de l'ajustement du layout: " & ex.Message)
-        End Try
-    End Sub
-
-    ' Méthode pour tester la connexion à la base de données
-    Private Sub TesterConnexion()
-        Try
-            ' Créer une connexion temporaire pour tester
-            Using conn As New OdbcConnection(connString)
-                conn.Open()
-                MessageBox.Show("Connexion réussie à la base de données!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-                ' Tester la requête pour vérifier qu'il y a des données
-                ' IMPORTANT: Vérifiez que le nom de la table est correct (majuscules/minuscules)
-                Using cmd As New OdbcCommand("SELECT COUNT(*) FROM RAPPORT_DE_VISITE", conn)
-                    Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
-                    MessageBox.Show("Nombre de rapports dans la table: " & count, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                End Using
-            End Using
-        Catch ex As Exception
-            MessageBox.Show("Erreur de connexion: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -105,16 +89,20 @@ Public Class LesRapports
             myConnection.ConnectionString = connString
             myConnection.Open()
 
-            ' Configurer la commande pour récupérer les rapports
-            ' Option: Filtrer les rapports en fonction de l'utilisateur connecté si nécessaire
-            Dim sqlQuery As String = "SELECT * FROM RAPPORT_DE_VISITE"
+            ' Configurer la commande pour récupérer les rapports avec les noms des visiteurs
+            ' Requête modifiée pour ne plus récupérer les informations de rôle
+            Dim sqlQuery As String = "SELECT R.ID_RAPPORT, R.DATE_VISITE, R.MOTIF_VISITE, R.CONTENU_VISITE, " &
+                       "R.ID_VISITEUR, U.NOM, U.PRENOM " &
+                       "FROM RAPPORT_DE_VISITE R " &
+                       "LEFT JOIN VISITEUR_MEDICAL VM ON R.ID_VISITEUR = VM.ID_VISITEUR " &
+                       "LEFT JOIN UTILISATEUR U ON VM.ID_USER = U.ID_USER"
 
             ' Si l'utilisateur n'est pas administrateur, ne montrer que ses propres rapports
-            If Not String.IsNullOrEmpty(UserID) AndAlso UserRole <> "ADMIN" Then
-                sqlQuery &= " WHERE ID_VISITEUR = '" & UserID & "'"
+            If Not String.IsNullOrEmpty(UserID) AndAlso UserRole <> "Responsable secteur" Then
+                sqlQuery &= " WHERE R.ID_VISITEUR = '" & UserID & "'"
             End If
 
-            sqlQuery &= " ORDER BY DATE_VISITE DESC"
+            sqlQuery &= " ORDER BY R.DATE_VISITE DESC"
 
             myCommand.Connection = myConnection
             myCommand.CommandText = sqlQuery
@@ -126,14 +114,34 @@ Public Class LesRapports
             myAdapter.SelectCommand = myCommand
             myAdapter.Fill(table)
 
+            ' Débogage: Afficher la requête SQL pour vérification
+            Console.WriteLine("Requête SQL exécutée: " & sqlQuery)
+
             ' Vérifier si des données ont été récupérées
             If table.Rows.Count > 0 Then
                 ' Débogage: Afficher des informations sur les données récupérées
                 Console.WriteLine("Nombre de lignes récupérées: " & table.Rows.Count)
                 Console.WriteLine("Noms des colonnes: " & String.Join(", ", table.Columns.Cast(Of DataColumn)().Select(Function(c) c.ColumnName)))
 
-                ' IMPORTANT: Afficher explicitement le nombre de lignes pour débogage
-                MessageBox.Show("Nombre de lignes récupérées: " & table.Rows.Count, "Débogage", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                ' Ajouter une colonne pour le nom complet du visiteur si elle n'existe pas déjà
+                If Not table.Columns.Contains("NOM_COMPLET") Then
+                    table.Columns.Add("NOM_COMPLET", GetType(String))
+                End If
+
+                ' Remplir la colonne NOM_COMPLET avec le NOM en majuscules
+                For Each row As DataRow In table.Rows
+                    ' Récupérer les valeurs en gérant les nulls de manière plus robuste
+                    Dim nom As String = If(row.IsNull("NOM"), "", row("NOM").ToString().ToUpper())
+                    Dim prenom As String = If(row.IsNull("PRENOM"), "", row("PRENOM").ToString())
+
+                    ' Construire le nom complet sans le rôle
+                    If Not String.IsNullOrEmpty(nom) Or Not String.IsNullOrEmpty(prenom) Then
+                        row("NOM_COMPLET") = prenom & " " & nom
+                    Else
+                        ' Si on n'a pas les informations, essayer de récupérer au moins l'ID visiteur
+                        row("NOM_COMPLET") = "Visiteur " & If(row.IsNull("ID_VISITEUR"), "inconnu", row("ID_VISITEUR").ToString())
+                    End If
+                Next
             Else
                 MessageBox.Show("Aucune donnée récupérée de la base de données.", "Avertissement", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             End If
@@ -150,7 +158,8 @@ Public Class LesRapports
             dgvRapports.Refresh()
 
         Catch ex As Exception
-            MessageBox.Show("Erreur lors du chargement des rapports: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Erreur lors du chargement des rapports: " & ex.Message & Environment.NewLine &
+                   "Trace de la pile: " & ex.StackTrace, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             ' Fermer la connexion
             If myConnection.State = ConnectionState.Open Then
@@ -159,7 +168,6 @@ Public Class LesRapports
         End Try
     End Sub
 
-    ' Méthode pour configurer l'apparence du DataGridView
     Private Sub ConfigurerDataGrid()
         ' IMPORTANT: Vérifier que la source de données est définie
         If dgvRapports.DataSource IsNot Nothing AndAlso dgvRapports.Columns.Count > 0 Then
@@ -167,27 +175,54 @@ Public Class LesRapports
             Dim columnNames As String = String.Join(", ", dgvRapports.Columns.Cast(Of DataGridViewColumn)().Select(Function(c) c.Name))
             Console.WriteLine("Colonnes du DataGridView: " & columnNames)
 
-            ' IMPORTANT: Configurer chaque colonne en fonction de son nom (insensible à la casse)
-            For i As Integer = 0 To dgvRapports.Columns.Count - 1
-                Dim colName As String = dgvRapports.Columns(i).Name.ToUpper()
+            ' Réorganiser l'ordre des colonnes
+            Dim ordreColonnes As String() = {"DATE_VISITE", "MOTIF_VISITE", "CONTENU_VISITE", "NOM_COMPLET"}
+            For i As Integer = 0 To ordreColonnes.Length - 1
+                If dgvRapports.Columns.Contains(ordreColonnes(i)) Then
+                    dgvRapports.Columns(ordreColonnes(i)).DisplayIndex = i
+                End If
+            Next
 
-                Select Case colName
-                    Case "ID_VISITE"
-                        dgvRapports.Columns(i).HeaderText = "N° de Visite"
-                        dgvRapports.Columns(i).Width = 80
-                    Case "ID_VISITEUR"
-                        dgvRapports.Columns(i).HeaderText = "Visiteur"
-                        dgvRapports.Columns(i).Width = 80
+            ' Configurer les colonnes
+            For Each col As DataGridViewColumn In dgvRapports.Columns
+                Select Case col.Name.ToUpper()
+                    Case "ID_RAPPORT"
+                        col.Visible = False ' Cacher le numéro de rapport
                     Case "DATE_VISITE"
-                        dgvRapports.Columns(i).HeaderText = "Date de visite"
-                        dgvRapports.Columns(i).DefaultCellStyle.Format = "dd/MM/yyyy"
+                        col.HeaderText = "Date de visite"
+                        col.DefaultCellStyle.Format = "dd/MM/yyyy"
+                        col.Width = 100
                     Case "MOTIF_VISITE"
-                        dgvRapports.Columns(i).HeaderText = "Motif de la visite"
-                        dgvRapports.Columns(i).Width = 300
+                        col.HeaderText = "Motif de la visite"
+                        col.Width = 200
+                    Case "CONTENU_VISITE"
+                        col.HeaderText = "Contenu de la visite"
+                        col.Width = 200
+                    Case "ID_VISITEUR"
+                        col.Visible = False ' Cacher la colonne ID_VISITEUR
+                    Case "NOM"
+                        col.Visible = False ' Cacher la colonne NOM
+                    Case "PRENOM"
+                        col.Visible = False ' Cacher la colonne PRENOM
+                    Case "NOM_COMPLET"
+                        col.HeaderText = "Visiteur"
+                        col.Width = 150
+                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 End Select
             Next
 
-            ' IMPORTANT: Ajouter la colonne de bouton uniquement si elle n'existe pas déjà
+            ' Ajouter la colonne "Modifier" si elle n'existe pas
+            If Not dgvRapports.Columns.Cast(Of DataGridViewColumn)().Any(Function(c) c.Name = "btnModifier") Then
+                Dim btnModifierColumn As New DataGridViewButtonColumn()
+                btnModifierColumn.HeaderText = "Modifier"
+                btnModifierColumn.Text = "Modifier"
+                btnModifierColumn.Name = "btnModifier"
+                btnModifierColumn.UseColumnTextForButtonValue = True
+                btnModifierColumn.Width = 80
+                dgvRapports.Columns.Add(btnModifierColumn)
+            End If
+
+            ' Ajouter la colonne "Supprimer" si elle n'existe pas
             If Not dgvRapports.Columns.Cast(Of DataGridViewColumn)().Any(Function(c) c.Name = "btnSupprimer") Then
                 Dim btnColumn As New DataGridViewButtonColumn()
                 btnColumn.HeaderText = "Action"
@@ -264,10 +299,13 @@ Public Class LesRapports
                         ' Supprimer le rapport
                         SupprimerRapport(idVisite)
                     End If
+                ElseIf dgvRapports.Columns(e.ColumnIndex).Name = "btnModifier" Then
+                    ' Code pour traiter le bouton Modifier
+                    ' À implémenter selon les besoins
                 End If
             End If
         Catch ex As Exception
-            MessageBox.Show("Erreur lors de la suppression: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Erreur lors de la gestion du clic: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -313,9 +351,9 @@ Public Class LesRapports
         Dim frmCreateRapport As New CreateRapport()
 
         ' Passer les informations de l'utilisateur connecté
-        frmCreateRapport.UserID = "1"  ' Forcer l'ID à 1 pour votre test
-        frmCreateRapport.UserName = "Visiteur Test"
-        frmCreateRapport.UserRole = "Visiteur"
+        frmCreateRapport.UserID = Me.UserID
+        frmCreateRapport.UserName = Me.UserName
+        frmCreateRapport.UserRole = Me.UserRole
 
         ' Afficher le formulaire en tant que dialogue modal
         frmCreateRapport.ShowDialog()
@@ -327,9 +365,5 @@ Public Class LesRapports
     ' Redimensionne les contrôles lorsque la fenêtre est redimensionnée
     Private Sub LesRapports_Resize(sender As Object, e As EventArgs) Handles Me.Resize
         AjusterLayout()
-    End Sub
-
-    Private Sub dgvRapports_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRapports.CellContentClick
-
     End Sub
 End Class
