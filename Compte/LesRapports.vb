@@ -89,20 +89,13 @@ Public Class LesRapports
             myConnection.ConnectionString = connString
             myConnection.Open()
 
-            ' Configurer la commande pour récupérer les rapports avec les noms des visiteurs
-            ' Requête modifiée pour ne plus récupérer les informations de rôle
-            Dim sqlQuery As String = "SELECT R.ID_RAPPORT, R.DATE_VISITE, R.MOTIF_VISITE, R.CONTENU_VISITE, " &
-                       "R.ID_VISITEUR, U.NOM, U.PRENOM " &
-                       "FROM RAPPORT_DE_VISITE R " &
-                       "LEFT JOIN VISITEUR_MEDICAL VM ON R.ID_VISITEUR = VM.ID_VISITEUR " &
-                       "LEFT JOIN UTILISATEUR U ON VM.ID_USER = U.ID_USER"
+            ' Configurer la commande pour récupérer les rapports avec les noms des médecins
+            Dim sqlQuery As String = "SELECT ID_RAPPORT, DATE_VISITE, MOTIF_VISITE, CONTENU_VISITE, NOM_MEDECIN FROM RAPPORT_DE_VISITE"
 
-            ' Si l'utilisateur n'est pas administrateur, ne montrer que ses propres rapports
-            If Not String.IsNullOrEmpty(UserID) AndAlso UserRole <> "Responsable secteur" Then
-                sqlQuery &= " WHERE R.ID_VISITEUR = '" & UserID & "'"
-            End If
+            sqlQuery &= " ORDER BY DATE_VISITE DESC"
 
-            sqlQuery &= " ORDER BY R.DATE_VISITE DESC"
+            ' Afficher la requête SQL pour débogage
+            Console.WriteLine("Requête SQL à exécuter: " & sqlQuery)
 
             myCommand.Connection = myConnection
             myCommand.CommandText = sqlQuery
@@ -110,45 +103,39 @@ Public Class LesRapports
             ' IMPORTANT: Créer un nouveau DataTable à chaque fois
             Dim table As New DataTable("RapportsVisite")
 
+            ' Débogage: Vérifier l'état de la connexion avant de remplir la table
+            Console.WriteLine("État de la connexion avant Fill: " & myConnection.State.ToString())
+
             ' Remplir le DataTable avec les données
             myAdapter.SelectCommand = myCommand
-            myAdapter.Fill(table)
 
-            ' Débogage: Afficher la requête SQL pour vérification
-            Console.WriteLine("Requête SQL exécutée: " & sqlQuery)
+            ' Débogage immédiat avant de remplir la table
+            Try
+                myAdapter.Fill(table)
+                Console.WriteLine("Nombre immédiat de lignes après Fill: " & table.Rows.Count)
+            Catch fillEx As Exception
+                Console.WriteLine("Erreur lors du remplissage de la table: " & fillEx.Message)
+                MessageBox.Show("Erreur lors du remplissage de la table: " & fillEx.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
 
             ' Vérifier si des données ont été récupérées
+            Console.WriteLine("Vérification du nombre de lignes: " & table.Rows.Count)
+
             If table.Rows.Count > 0 Then
                 ' Débogage: Afficher des informations sur les données récupérées
                 Console.WriteLine("Nombre de lignes récupérées: " & table.Rows.Count)
                 Console.WriteLine("Noms des colonnes: " & String.Join(", ", table.Columns.Cast(Of DataColumn)().Select(Function(c) c.ColumnName)))
-
-                ' Ajouter une colonne pour le nom complet du visiteur si elle n'existe pas déjà
-                If Not table.Columns.Contains("NOM_COMPLET") Then
-                    table.Columns.Add("NOM_COMPLET", GetType(String))
-                End If
-
-                ' Remplir la colonne NOM_COMPLET avec le NOM en majuscules
-                For Each row As DataRow In table.Rows
-                    ' Récupérer les valeurs en gérant les nulls de manière plus robuste
-                    Dim nom As String = If(row.IsNull("NOM"), "", row("NOM").ToString().ToUpper())
-                    Dim prenom As String = If(row.IsNull("PRENOM"), "", row("PRENOM").ToString())
-
-                    ' Construire le nom complet sans le rôle
-                    If Not String.IsNullOrEmpty(nom) Or Not String.IsNullOrEmpty(prenom) Then
-                        row("NOM_COMPLET") = prenom & " " & nom
-                    Else
-                        ' Si on n'a pas les informations, essayer de récupérer au moins l'ID visiteur
-                        row("NOM_COMPLET") = "Visiteur " & If(row.IsNull("ID_VISITEUR"), "inconnu", row("ID_VISITEUR").ToString())
-                    End If
-                Next
             Else
+                Console.WriteLine("Aucune ligne récupérée dans la table.")
                 MessageBox.Show("Aucune donnée récupérée de la base de données.", "Avertissement", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             End If
 
             ' IMPORTANT: Définir explicitement le DataSource à null avant de l'affecter
             dgvRapports.DataSource = Nothing
             dgvRapports.DataSource = table
+
+            ' Débogage après affectation du DataSource
+            Console.WriteLine("Nombre de lignes dans le DataGridView après affectation: " & dgvRapports.Rows.Count)
 
             ' Configurer l'apparence du DataGrid
             ConfigurerDataGrid()
@@ -176,7 +163,7 @@ Public Class LesRapports
             Console.WriteLine("Colonnes du DataGridView: " & columnNames)
 
             ' Réorganiser l'ordre des colonnes
-            Dim ordreColonnes As String() = {"DATE_VISITE", "MOTIF_VISITE", "CONTENU_VISITE", "NOM_COMPLET"}
+            Dim ordreColonnes As String() = {"DATE_VISITE", "MOTIF_VISITE", "CONTENU_VISITE", "NOM_MEDECIN"}
             For i As Integer = 0 To ordreColonnes.Length - 1
                 If dgvRapports.Columns.Contains(ordreColonnes(i)) Then
                     dgvRapports.Columns(ordreColonnes(i)).DisplayIndex = i
@@ -198,14 +185,8 @@ Public Class LesRapports
                     Case "CONTENU_VISITE"
                         col.HeaderText = "Contenu de la visite"
                         col.Width = 200
-                    Case "ID_VISITEUR"
-                        col.Visible = False ' Cacher la colonne ID_VISITEUR
-                    Case "NOM"
-                        col.Visible = False ' Cacher la colonne NOM
-                    Case "PRENOM"
-                        col.Visible = False ' Cacher la colonne PRENOM
-                    Case "NOM_COMPLET"
-                        col.HeaderText = "Visiteur"
+                    Case "NOM_MEDECIN"
+                        col.HeaderText = "Médecin"
                         col.Width = 150
                         col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 End Select
@@ -384,7 +365,7 @@ Public Class LesRapports
                     frmEditRapport.RapportID = idRapport
                     frmEditRapport.DateVisite = dateVisite
                     frmEditRapport.MotifVisite = motifVisite
-                    frmEditRapport.ContenuVisite = contenuVisite  ' Utiliser contenuVisite au lieu de bilanVisite
+                    frmEditRapport.ContenuVisite = contenuVisite
 
                     ' Afficher le formulaire en tant que dialogue modal
                     Dim result As DialogResult = frmEditRapport.ShowDialog()

@@ -23,16 +23,12 @@ Public Class CreateRapport
 
     Private Sub AjouterChampContenu()
         ' Ajuster la taille du formulaire pour accueillir le nouveau champ
-        Me.Height = 350
-
-        ' Repositionner les boutons existants
-        btnEnregistrer.Location = New Point(btnEnregistrer.Location.X, 300)
-        btnAnnuler.Location = New Point(btnAnnuler.Location.X, 300)
+        Me.Height = 380
 
         ' Créer le label pour le contenu
         Dim lblContenu As New Label()
         lblContenu.AutoSize = True
-        lblContenu.Location = New Point(16, 180)
+        lblContenu.Location = New Point(16, 255)
         lblContenu.Name = "lblContenu"
         lblContenu.Size = New System.Drawing.Size(69, 13)
         lblContenu.Text = "Contenu :"
@@ -40,12 +36,16 @@ Public Class CreateRapport
 
         ' Créer le TextBox pour le contenu
         Dim txtContenu As New TextBox()
-        txtContenu.Location = New Point(89, 180)
+        txtContenu.Location = New Point(89, 255)
         txtContenu.Multiline = True
         txtContenu.Name = "txtContenu"
         txtContenu.ScrollBars = ScrollBars.Vertical
-        txtContenu.Size = New Size(447, 100)
+        txtContenu.Size = New Size(447, 80)
         Me.Controls.Add(txtContenu)
+
+        ' Repositionner les boutons existants
+        btnEnregistrer.Location = New Point(btnEnregistrer.Location.X, 350)
+        btnAnnuler.Location = New Point(btnAnnuler.Location.X, 350)
     End Sub
 
     Private Sub RemplirChampsParDefaut()
@@ -65,8 +65,15 @@ Public Class CreateRapport
                 Return
             End If
 
+            If String.IsNullOrWhiteSpace(txtMedecin.Text) Then
+                MessageBox.Show("Veuillez saisir le nom du médecin.", "Champ manquant", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                txtMedecin.Focus()
+                Return
+            End If
+
             ' Récupérer le contenu du rapport
             Dim contenuRapport As String = ""
+
             For Each control As Control In Me.Controls
                 If control.Name = "txtContenu" Then
                     contenuRapport = DirectCast(control, TextBox).Text
@@ -80,7 +87,7 @@ Public Class CreateRapport
 
             ' Créer la requête SQL pour insérer un nouveau rapport
             myCommand.Connection = myConnection
-            myCommand.CommandText = "INSERT INTO RAPPORT_DE_VISITE (DATE_VISITE, MOTIF_VISITE, CONTENU_VISITE, ID_VISITEUR) " &
+            myCommand.CommandText = "INSERT INTO RAPPORT_DE_VISITE (DATE_VISITE, MOTIF_VISITE, CONTENU_VISITE, NOM_MEDECIN) " &
                                    "VALUES (?, ?, ?, ?)"
 
             ' Ajouter les paramètres
@@ -88,7 +95,7 @@ Public Class CreateRapport
             myCommand.Parameters.AddWithValue("DATE_VISITE", dtpDate.Value)
             myCommand.Parameters.AddWithValue("MOTIF_VISITE", txtDescription.Text)
             myCommand.Parameters.AddWithValue("CONTENU_VISITE", contenuRapport)
-            myCommand.Parameters.AddWithValue("ID_VISITEUR", UserID)
+            myCommand.Parameters.AddWithValue("NOM_MEDECIN", txtMedecin.Text)
 
             ' Exécuter la requête
             Dim nbLignes As Integer = myCommand.ExecuteNonQuery()

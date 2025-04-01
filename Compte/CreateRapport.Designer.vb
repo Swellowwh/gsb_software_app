@@ -29,6 +29,8 @@ Partial Class CreateRapport
         Me.txtDescription = New System.Windows.Forms.TextBox()
         Me.btnEnregistrer = New System.Windows.Forms.Button()
         Me.btnAnnuler = New System.Windows.Forms.Button()
+        Me.lblMedecin = New System.Windows.Forms.Label()
+        Me.txtMedecin = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'lblTitre
@@ -65,7 +67,7 @@ Partial Class CreateRapport
         Me.lblDescription.Name = "lblDescription"
         Me.lblDescription.Size = New System.Drawing.Size(69, 13)
         Me.lblDescription.TabIndex = 9
-        Me.lblDescription.Text = "Description :"
+        Me.lblDescription.Text = "Motif du rapport :"
         '
         'txtDescription
         '
@@ -76,21 +78,37 @@ Partial Class CreateRapport
         Me.txtDescription.Size = New System.Drawing.Size(447, 80)
         Me.txtDescription.TabIndex = 10
         '
+        'lblMedecin
+        '
+        Me.lblMedecin.AutoSize = True
+        Me.lblMedecin.Location = New System.Drawing.Point(16, 180)
+        Me.lblMedecin.Name = "lblMedecin"
+        Me.lblMedecin.Size = New System.Drawing.Size(54, 13)
+        Me.lblMedecin.TabIndex = 11
+        Me.lblMedecin.Text = "Médecin :"
+        '
+        'txtMedecin
+        '
+        Me.txtMedecin.Location = New System.Drawing.Point(89, 180)
+        Me.txtMedecin.Name = "txtMedecin"
+        Me.txtMedecin.Size = New System.Drawing.Size(200, 20)
+        Me.txtMedecin.TabIndex = 12
+        '
         'btnEnregistrer
         '
-        Me.btnEnregistrer.Location = New System.Drawing.Point(89, 180)
+        Me.btnEnregistrer.Location = New System.Drawing.Point(89, 215)
         Me.btnEnregistrer.Name = "btnEnregistrer"
         Me.btnEnregistrer.Size = New System.Drawing.Size(100, 25)
-        Me.btnEnregistrer.TabIndex = 12
+        Me.btnEnregistrer.TabIndex = 13
         Me.btnEnregistrer.Text = "Enregistrer"
         Me.btnEnregistrer.UseVisualStyleBackColor = True
         '
         'btnAnnuler
         '
-        Me.btnAnnuler.Location = New System.Drawing.Point(195, 180)
+        Me.btnAnnuler.Location = New System.Drawing.Point(195, 215)
         Me.btnAnnuler.Name = "btnAnnuler"
         Me.btnAnnuler.Size = New System.Drawing.Size(100, 25)
-        Me.btnAnnuler.TabIndex = 13
+        Me.btnAnnuler.TabIndex = 14
         Me.btnAnnuler.Text = "Annuler"
         Me.btnAnnuler.UseVisualStyleBackColor = True
         '
@@ -98,9 +116,11 @@ Partial Class CreateRapport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(554, 220)
+        Me.ClientSize = New System.Drawing.Size(554, 255)
         Me.Controls.Add(Me.btnAnnuler)
         Me.Controls.Add(Me.btnEnregistrer)
+        Me.Controls.Add(Me.txtMedecin)
+        Me.Controls.Add(Me.lblMedecin)
         Me.Controls.Add(Me.txtDescription)
         Me.Controls.Add(Me.lblDescription)
         Me.Controls.Add(Me.dtpDate)
@@ -118,6 +138,8 @@ Partial Class CreateRapport
     Friend WithEvents dtpDate As DateTimePicker
     Friend WithEvents lblDescription As Label
     Friend WithEvents txtDescription As TextBox
+    Friend WithEvents lblMedecin As Label
+    Friend WithEvents txtMedecin As TextBox
     Friend WithEvents btnEnregistrer As Button
     Friend WithEvents btnAnnuler As Button
 End Class
