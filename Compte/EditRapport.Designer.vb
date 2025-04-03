@@ -1,6 +1,7 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class EditRapport
     Inherits System.Windows.Forms.Form
+
     'Form remplace la méthode Dispose pour nettoyer la liste des composants.
     <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -12,8 +13,10 @@ Partial Class EditRapport
             MyBase.Dispose(disposing)
         End Try
     End Sub
+
     'Requise par le Concepteur Windows Form
     Private components As System.ComponentModel.IContainer
+
     'REMARQUE : la procédure suivante est requise par le Concepteur Windows Form
     'Elle peut être modifiée à l'aide du Concepteur Windows Form.  
     'Ne la modifiez pas à l'aide de l'éditeur de code.
@@ -21,6 +24,9 @@ Partial Class EditRapport
     Private Sub InitializeComponent()
         Me.lblTitre = New System.Windows.Forms.Label()
         Me.pnlContent = New System.Windows.Forms.Panel()
+        Me.txtMedecin = New System.Windows.Forms.TextBox()
+        Me.lblMedecin = New System.Windows.Forms.Label()
+        Me.lblRapportId = New System.Windows.Forms.Label()
         Me.txtBilan = New System.Windows.Forms.TextBox()
         Me.lblBilan = New System.Windows.Forms.Label()
         Me.dtpDateVisite = New System.Windows.Forms.DateTimePicker()
@@ -32,7 +38,6 @@ Partial Class EditRapport
         Me.btnEnregistrer = New System.Windows.Forms.Button()
         Me.pnlUserInfo = New System.Windows.Forms.Panel()
         Me.lblUserInfo = New System.Windows.Forms.Label()
-        Me.lblRapportId = New System.Windows.Forms.Label()
         Me.pnlContent.SuspendLayout()
         Me.pnlActions.SuspendLayout()
         Me.pnlUserInfo.SuspendLayout()
@@ -53,6 +58,8 @@ Partial Class EditRapport
         '
         'pnlContent
         '
+        Me.pnlContent.Controls.Add(Me.txtMedecin)
+        Me.pnlContent.Controls.Add(Me.lblMedecin)
         Me.pnlContent.Controls.Add(Me.lblRapportId)
         Me.pnlContent.Controls.Add(Me.txtBilan)
         Me.pnlContent.Controls.Add(Me.lblBilan)
@@ -64,8 +71,36 @@ Partial Class EditRapport
         Me.pnlContent.Location = New System.Drawing.Point(0, 90)
         Me.pnlContent.Name = "pnlContent"
         Me.pnlContent.Padding = New System.Windows.Forms.Padding(20)
-        Me.pnlContent.Size = New System.Drawing.Size(600, 310)
+        Me.pnlContent.Size = New System.Drawing.Size(600, 360)
         Me.pnlContent.TabIndex = 1
+        '
+        'txtMedecin
+        '
+        Me.txtMedecin.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtMedecin.Location = New System.Drawing.Point(180, 95)
+        Me.txtMedecin.Name = "txtMedecin"
+        Me.txtMedecin.Size = New System.Drawing.Size(380, 20)
+        Me.txtMedecin.TabIndex = 8
+        '
+        'lblMedecin
+        '
+        Me.lblMedecin.AutoSize = True
+        Me.lblMedecin.Location = New System.Drawing.Point(20, 95)
+        Me.lblMedecin.Name = "lblMedecin"
+        Me.lblMedecin.Size = New System.Drawing.Size(92, 13)
+        Me.lblMedecin.TabIndex = 7
+        Me.lblMedecin.Text = "Nom du médecin:"
+        '
+        'lblRapportId
+        '
+        Me.lblRapportId.AutoSize = True
+        Me.lblRapportId.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblRapportId.Location = New System.Drawing.Point(410, 25)
+        Me.lblRapportId.Name = "lblRapportId"
+        Me.lblRapportId.Size = New System.Drawing.Size(56, 13)
+        Me.lblRapportId.TabIndex = 6
+        Me.lblRapportId.Text = "ID: #123"
         '
         'txtBilan
         '
@@ -74,7 +109,7 @@ Partial Class EditRapport
         Me.txtBilan.Location = New System.Drawing.Point(180, 130)
         Me.txtBilan.Multiline = True
         Me.txtBilan.Name = "txtBilan"
-        Me.txtBilan.Size = New System.Drawing.Size(380, 160)
+        Me.txtBilan.Size = New System.Drawing.Size(380, 210)
         Me.txtBilan.TabIndex = 5
         '
         'lblBilan
@@ -112,7 +147,7 @@ Partial Class EditRapport
         Me.txtMotif.Location = New System.Drawing.Point(180, 60)
         Me.txtMotif.Multiline = True
         Me.txtMotif.Name = "txtMotif"
-        Me.txtMotif.Size = New System.Drawing.Size(380, 50)
+        Me.txtMotif.Size = New System.Drawing.Size(380, 20)
         Me.txtMotif.TabIndex = 3
         '
         'lblMotif
@@ -130,7 +165,7 @@ Partial Class EditRapport
         Me.pnlActions.Controls.Add(Me.btnAnnuler)
         Me.pnlActions.Controls.Add(Me.btnEnregistrer)
         Me.pnlActions.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlActions.Location = New System.Drawing.Point(0, 400)
+        Me.pnlActions.Location = New System.Drawing.Point(0, 450)
         Me.pnlActions.Name = "pnlActions"
         Me.pnlActions.Padding = New System.Windows.Forms.Padding(10)
         Me.pnlActions.Size = New System.Drawing.Size(600, 60)
@@ -177,21 +212,11 @@ Partial Class EditRapport
         Me.lblUserInfo.Text = "Utilisateur connecté: "
         Me.lblUserInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'lblRapportId
-        '
-        Me.lblRapportId.AutoSize = True
-        Me.lblRapportId.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRapportId.Location = New System.Drawing.Point(410, 25)
-        Me.lblRapportId.Name = "lblRapportId"
-        Me.lblRapportId.Size = New System.Drawing.Size(56, 13)
-        Me.lblRapportId.TabIndex = 6
-        Me.lblRapportId.Text = "ID: #123"
-        '
         'EditRapport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(600, 460)
+        Me.ClientSize = New System.Drawing.Size(600, 510)
         Me.Controls.Add(Me.pnlContent)
         Me.Controls.Add(Me.pnlActions)
         Me.Controls.Add(Me.pnlUserInfo)
@@ -224,4 +249,6 @@ Partial Class EditRapport
     Friend WithEvents txtBilan As TextBox
     Friend WithEvents lblBilan As Label
     Friend WithEvents lblRapportId As Label
+    Friend WithEvents txtMedecin As TextBox
+    Friend WithEvents lblMedecin As Label
 End Class

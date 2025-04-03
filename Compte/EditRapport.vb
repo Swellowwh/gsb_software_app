@@ -16,7 +16,8 @@ Public Class EditRapport
     Public Property RapportID As Integer
     Public Property DateVisite As DateTime
     Public Property MotifVisite As String
-    Public Property ContenuVisite As String ' Renommé de BilanVisite à ContenuVisite
+    Public Property ContenuVisite As String
+    Public Property NomMedecin As String ' Nouvelle propriété pour le nom du médecin
 
     ' Cette méthode s'exécute lorsque le formulaire est chargé
     Private Sub EditRapport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -66,11 +67,23 @@ Public Class EditRapport
                         Dim contenuOrdinal As Integer = reader.GetOrdinal("CONTENU_VISITE")
                         If Not reader.IsDBNull(contenuOrdinal) Then
                             ContenuVisite = reader.GetString(contenuOrdinal)
-                            txtBilan.Text = ContenuVisite ' Utilise txtBilan comme contrôle mais pour le contenu
+                            txtBilan.Text = ContenuVisite
                         End If
                     Catch ex As Exception
                         ' La colonne CONTENU_VISITE n'existe peut-être pas
                         Console.WriteLine("Info: La colonne CONTENU_VISITE n'existe peut-être pas: " & ex.Message)
+                    End Try
+
+                    ' Nom du médecin
+                    Try
+                        Dim medecinOrdinal As Integer = reader.GetOrdinal("NOM_MEDECIN")
+                        If Not reader.IsDBNull(medecinOrdinal) Then
+                            NomMedecin = reader.GetString(medecinOrdinal)
+                            txtMedecin.Text = NomMedecin
+                        End If
+                    Catch ex As Exception
+                        ' La colonne NOM_MEDECIN n'existe peut-être pas
+                        Console.WriteLine("Info: La colonne NOM_MEDECIN n'existe peut-être pas: " & ex.Message)
                     End Try
                 Else
                     MessageBox.Show("Aucun rapport trouvé avec l'ID " & RapportID, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -98,13 +111,19 @@ Public Class EditRapport
                 Return
             End If
 
+            If String.IsNullOrEmpty(txtMedecin.Text.Trim()) Then
+                MessageBox.Show("Veuillez remplir le nom du médecin.", "Champ obligatoire", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                txtMedecin.Focus()
+                Return
+            End If
+
             ' Ouvrir une connexion à la base de données
             myConnection.ConnectionString = connString
             myConnection.Open()
 
             ' Créer la commande SQL pour mettre à jour le rapport
-            ' On inclut toujours le contenu de la visite
-            Dim sqlQuery As String = "UPDATE RAPPORT_DE_VISITE SET DATE_VISITE = ?, MOTIF_VISITE = ?, CONTENU_VISITE = ? WHERE ID_RAPPORT = ?"
+            ' On inclut maintenant le nom du médecin
+            Dim sqlQuery As String = "UPDATE RAPPORT_DE_VISITE SET DATE_VISITE = ?, MOTIF_VISITE = ?, CONTENU_VISITE = ?, NOM_MEDECIN = ? WHERE ID_RAPPORT = ?"
 
             myCommand.Connection = myConnection
             myCommand.CommandText = sqlQuery
@@ -113,7 +132,8 @@ Public Class EditRapport
             ' Ajouter les paramètres
             myCommand.Parameters.AddWithValue("?", dtpDateVisite.Value.Date)
             myCommand.Parameters.AddWithValue("?", txtMotif.Text.Trim())
-            myCommand.Parameters.AddWithValue("?", txtBilan.Text.Trim()) ' Utilise txtBilan pour le contenu
+            myCommand.Parameters.AddWithValue("?", txtBilan.Text.Trim())
+            myCommand.Parameters.AddWithValue("?", txtMedecin.Text.Trim())
             myCommand.Parameters.AddWithValue("?", RapportID)
 
             ' Exécuter la mise à jour
