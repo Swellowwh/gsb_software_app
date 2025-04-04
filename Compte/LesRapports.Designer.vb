@@ -127,7 +127,7 @@ Partial Class LesRapports
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(900, 600)
+        Me.ClientSize = New System.Drawing.Size(1200, 600)
         Me.Controls.Add(Me.dgvRapports)
         Me.Controls.Add(Me.pnlUserInfo)
         Me.Controls.Add(Me.lblTitre)

@@ -77,7 +77,7 @@ Public Class LesRapports
         End Try
     End Sub
 
-    ' Méthode pour charger les rapports depuis la base de données
+    ' Méthode pour charger les rapports depuis la base de données avec les produits présentés
     Private Sub ChargerRapports()
         Try
             ' IMPORTANT: Assurez-vous que toute connexion précédente est fermée
@@ -89,10 +89,10 @@ Public Class LesRapports
             myConnection.ConnectionString = connString
             myConnection.Open()
 
-            ' Configurer la commande pour récupérer les rapports avec les noms des médecins
-            Dim sqlQuery As String = "SELECT ID_RAPPORT, DATE_VISITE, MOTIF_VISITE, CONTENU_VISITE, NOM_MEDECIN FROM RAPPORT_DE_VISITE"
-
-            sqlQuery &= " ORDER BY DATE_VISITE DESC"
+            ' Configurer la commande pour récupérer les rapports avec les produits associés
+            Dim sqlQuery As String = "SELECT rv.ID_RAPPORT, rv.DATE_VISITE, rv.MOTIF_VISITE, rv.CONTENU_VISITE, rv.NOM_MEDECIN "
+            sqlQuery &= "FROM RAPPORT_DE_VISITE rv "
+            sqlQuery &= "ORDER BY rv.DATE_VISITE DESC"
 
             ' Afficher la requête SQL pour débogage
             Console.WriteLine("Requête SQL à exécuter: " & sqlQuery)
@@ -125,6 +125,18 @@ Public Class LesRapports
                 ' Débogage: Afficher des informations sur les données récupérées
                 Console.WriteLine("Nombre de lignes récupérées: " & table.Rows.Count)
                 Console.WriteLine("Noms des colonnes: " & String.Join(", ", table.Columns.Cast(Of DataColumn)().Select(Function(c) c.ColumnName)))
+
+                ' Ajouter une colonne pour les produits présentés
+                If Not table.Columns.Contains("PRODUITS_PRESENTES") Then
+                    table.Columns.Add("PRODUITS_PRESENTES", GetType(String))
+                End If
+
+                ' Pour chaque rapport, récupérer les produits associés
+                For Each row As DataRow In table.Rows
+                    Dim idRapport As Integer = Convert.ToInt32(row("ID_RAPPORT"))
+                    row("PRODUITS_PRESENTES") = RecupererProduitsRapport(idRapport)
+                Next
+
             Else
                 Console.WriteLine("Aucune ligne récupérée dans la table.")
                 MessageBox.Show("Aucune donnée récupérée de la base de données.", "Avertissement", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -155,6 +167,52 @@ Public Class LesRapports
         End Try
     End Sub
 
+    ' Nouvelle méthode pour récupérer les produits associés à un rapport
+    ' Nouvelle méthode pour récupérer les produits associés à un rapport
+    Private Function RecupererProduitsRapport(ByVal idRapport As Integer) As String
+        Dim listeProduits As String = ""
+
+        Try
+            ' Utiliser une connexion séparée pour cette requête
+            Using conn As New OdbcConnection(connString)
+                conn.Open()
+
+                ' Requête pour récupérer les produits associés au rapport avec leur quantité
+                Dim query As String = "SELECT p.LIBELLE, rp.QUANTITE FROM RAPPORT_PRODUIT rp " &
+                                 "JOIN PRODUIT p ON rp.PRODUIT_ID = p.PRODUIT_ID " &
+                                 "WHERE rp.ID_RAPPORT = ? " &
+                                 "ORDER BY p.LIBELLE"
+
+                Using cmd As New OdbcCommand(query, conn)
+                    cmd.Parameters.AddWithValue("?", idRapport)
+
+                    Using reader As OdbcDataReader = cmd.ExecuteReader()
+                        Dim produits As New List(Of String)
+
+                        While reader.Read()
+                            Dim libelle As String = reader("LIBELLE").ToString()
+                            Dim quantite As Integer = Convert.ToInt32(reader("QUANTITE"))
+
+                            ' Format: "XQtés NomProduit"
+                            produits.Add(quantite & "x " & libelle & ",")
+                        End While
+
+                        ' Concaténer les produits avec virgule et espace
+                        If produits.Count > 0 Then
+                            listeProduits = String.Join(", ", produits)
+                        End If
+                    End Using
+                End Using
+            End Using
+
+        Catch ex As Exception
+            Console.WriteLine("Erreur lors de la récupération des produits: " & ex.Message)
+            listeProduits = "Erreur: " & ex.Message
+        End Try
+
+        Return listeProduits
+    End Function
+
     Private Sub ConfigurerDataGrid()
         ' IMPORTANT: Vérifier que la source de données est définie
         If dgvRapports.DataSource IsNot Nothing AndAlso dgvRapports.Columns.Count > 0 Then
@@ -163,7 +221,7 @@ Public Class LesRapports
             Console.WriteLine("Colonnes du DataGridView: " & columnNames)
 
             ' Réorganiser l'ordre des colonnes
-            Dim ordreColonnes As String() = {"DATE_VISITE", "MOTIF_VISITE", "CONTENU_VISITE", "NOM_MEDECIN"}
+            Dim ordreColonnes As String() = {"DATE_VISITE", "MOTIF_VISITE", "CONTENU_VISITE", "NOM_MEDECIN", "PRODUITS_PRESENTES"}
             For i As Integer = 0 To ordreColonnes.Length - 1
                 If dgvRapports.Columns.Contains(ordreColonnes(i)) Then
                     dgvRapports.Columns(ordreColonnes(i)).DisplayIndex = i
@@ -181,13 +239,16 @@ Public Class LesRapports
                         col.Width = 100
                     Case "MOTIF_VISITE"
                         col.HeaderText = "Motif de la visite"
-                        col.Width = 200
+                        col.Width = 150
                     Case "CONTENU_VISITE"
                         col.HeaderText = "Contenu de la visite"
-                        col.Width = 200
+                        col.Width = 150
                     Case "NOM_MEDECIN"
                         col.HeaderText = "Médecin"
-                        col.Width = 150
+                        col.Width = 100
+                    Case "PRODUITS_PRESENTES"
+                        col.HeaderText = "Produits présentés"
+                        col.Width = 200
                         col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 End Select
             Next
@@ -387,6 +448,12 @@ Public Class LesRapports
             ' IMPORTANT: Utiliser une connexion séparée pour éviter les conflits
             Using deleteConnection As New OdbcConnection(connString)
                 deleteConnection.Open()
+
+                ' Supprimer d'abord les associations avec les produits
+                Using deleteProductsCommand As New OdbcCommand("DELETE FROM RAPPORT_PRODUIT WHERE ID_RAPPORT = ?", deleteConnection)
+                    deleteProductsCommand.Parameters.AddWithValue("?", idVisite)
+                    deleteProductsCommand.ExecuteNonQuery()
+                End Using
 
                 ' Configurer la commande pour supprimer le rapport
                 ' IMPORTANT: Utiliser un paramètre pour éviter les injections SQL

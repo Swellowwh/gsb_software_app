@@ -31,6 +31,20 @@ Partial Class CreateRapport
         Me.btnAnnuler = New System.Windows.Forms.Button()
         Me.lblMedecin = New System.Windows.Forms.Label()
         Me.txtMedecin = New System.Windows.Forms.TextBox()
+        Me.lblContenu = New System.Windows.Forms.Label()
+        Me.txtContenu = New System.Windows.Forms.TextBox()
+        Me.lblProduits = New System.Windows.Forms.Label()
+        Me.cmbProduits = New System.Windows.Forms.ComboBox()
+        Me.btnAjouterProduit = New System.Windows.Forms.Button()
+        Me.lstProduits = New System.Windows.Forms.ListBox()
+        Me.nudQuantite = New System.Windows.Forms.NumericUpDown()
+        Me.lblQuantite = New System.Windows.Forms.Label()
+        Me.btnSupprimerProduit = New System.Windows.Forms.Button()
+        Me.lblCommentaire = New System.Windows.Forms.Label()
+        Me.txtCommentaire = New System.Windows.Forms.TextBox()
+        Me.pnlProduits = New System.Windows.Forms.Panel()
+        CType(Me.nudQuantite, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlProduits.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblTitre
@@ -94,21 +108,118 @@ Partial Class CreateRapport
         Me.txtMedecin.Size = New System.Drawing.Size(200, 20)
         Me.txtMedecin.TabIndex = 12
         '
+        'lblContenu
+        '
+        Me.lblContenu.AutoSize = True
+        Me.lblContenu.Location = New System.Drawing.Point(16, 215)
+        Me.lblContenu.Name = "lblContenu"
+        Me.lblContenu.Size = New System.Drawing.Size(54, 13)
+        Me.lblContenu.TabIndex = 13
+        Me.lblContenu.Text = "Contenu :"
+        '
+        'txtContenu
+        '
+        Me.txtContenu.Location = New System.Drawing.Point(89, 215)
+        Me.txtContenu.Multiline = True
+        Me.txtContenu.Name = "txtContenu"
+        Me.txtContenu.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtContenu.Size = New System.Drawing.Size(447, 80)
+        Me.txtContenu.TabIndex = 14
+        '
+        'lblProduits
+        '
+        Me.lblProduits.AutoSize = True
+        Me.lblProduits.Location = New System.Drawing.Point(3, 10)
+        Me.lblProduits.Name = "lblProduits"
+        Me.lblProduits.Size = New System.Drawing.Size(46, 13)
+        Me.lblProduits.TabIndex = 15
+        Me.lblProduits.Text = "Produit :"
+        '
+        'cmbProduits
+        '
+        Me.cmbProduits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbProduits.FormattingEnabled = True
+        Me.cmbProduits.Location = New System.Drawing.Point(86, 7)
+        Me.cmbProduits.Name = "cmbProduits"
+        Me.cmbProduits.Size = New System.Drawing.Size(200, 21)
+        Me.cmbProduits.TabIndex = 16
+        '
+        'btnAjouterProduit
+        '
+        Me.btnAjouterProduit.Location = New System.Drawing.Point(86, 90)
+        Me.btnAjouterProduit.Name = "btnAjouterProduit"
+        Me.btnAjouterProduit.Size = New System.Drawing.Size(125, 23)
+        Me.btnAjouterProduit.TabIndex = 17
+        Me.btnAjouterProduit.Text = "Ajouter le produit"
+        Me.btnAjouterProduit.UseVisualStyleBackColor = True
+        '
+        'lstProduits
+        '
+        Me.lstProduits.FormattingEnabled = True
+        Me.lstProduits.Location = New System.Drawing.Point(6, 125)
+        Me.lstProduits.Name = "lstProduits"
+        Me.lstProduits.Size = New System.Drawing.Size(447, 95)
+        Me.lstProduits.TabIndex = 18
+        '
+        'nudQuantite
+        '
+        Me.nudQuantite.Location = New System.Drawing.Point(86, 37)
+        Me.nudQuantite.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.nudQuantite.Name = "nudQuantite"
+        Me.nudQuantite.Size = New System.Drawing.Size(73, 20)
+        Me.nudQuantite.TabIndex = 19
+        Me.nudQuantite.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'lblQuantite
+        '
+        Me.lblQuantite.AutoSize = True
+        Me.lblQuantite.Location = New System.Drawing.Point(3, 39)
+        Me.lblQuantite.Name = "lblQuantite"
+        Me.lblQuantite.Size = New System.Drawing.Size(56, 13)
+        Me.lblQuantite.TabIndex = 20
+        Me.lblQuantite.Text = "Quantité :"
+        '
+        'btnSupprimerProduit
+        '
+        Me.btnSupprimerProduit.Location = New System.Drawing.Point(217, 90)
+        Me.btnSupprimerProduit.Name = "btnSupprimerProduit"
+        Me.btnSupprimerProduit.Size = New System.Drawing.Size(125, 23)
+        Me.btnSupprimerProduit.TabIndex = 21
+        Me.btnSupprimerProduit.Text = "Supprimer le produit"
+        Me.btnSupprimerProduit.UseVisualStyleBackColor = True
+        '
+        'pnlProduits
+        '
+        Me.pnlProduits.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlProduits.Controls.Add(Me.lblProduits)
+        Me.pnlProduits.Controls.Add(Me.txtCommentaire)
+        Me.pnlProduits.Controls.Add(Me.cmbProduits)
+        Me.pnlProduits.Controls.Add(Me.lblCommentaire)
+        Me.pnlProduits.Controls.Add(Me.btnAjouterProduit)
+        Me.pnlProduits.Controls.Add(Me.btnSupprimerProduit)
+        Me.pnlProduits.Controls.Add(Me.lstProduits)
+        Me.pnlProduits.Controls.Add(Me.lblQuantite)
+        Me.pnlProduits.Controls.Add(Me.nudQuantite)
+        Me.pnlProduits.Location = New System.Drawing.Point(19, 310)
+        Me.pnlProduits.Name = "pnlProduits"
+        Me.pnlProduits.Size = New System.Drawing.Size(517, 230)
+        Me.pnlProduits.TabIndex = 24
+        '
         'btnEnregistrer
         '
-        Me.btnEnregistrer.Location = New System.Drawing.Point(89, 215)
+        Me.btnEnregistrer.Location = New System.Drawing.Point(89, 555)
         Me.btnEnregistrer.Name = "btnEnregistrer"
         Me.btnEnregistrer.Size = New System.Drawing.Size(100, 25)
-        Me.btnEnregistrer.TabIndex = 13
+        Me.btnEnregistrer.TabIndex = 25
         Me.btnEnregistrer.Text = "Enregistrer"
         Me.btnEnregistrer.UseVisualStyleBackColor = True
         '
         'btnAnnuler
         '
-        Me.btnAnnuler.Location = New System.Drawing.Point(195, 215)
+        Me.btnAnnuler.Location = New System.Drawing.Point(195, 555)
         Me.btnAnnuler.Name = "btnAnnuler"
         Me.btnAnnuler.Size = New System.Drawing.Size(100, 25)
-        Me.btnAnnuler.TabIndex = 14
+        Me.btnAnnuler.TabIndex = 26
         Me.btnAnnuler.Text = "Annuler"
         Me.btnAnnuler.UseVisualStyleBackColor = True
         '
@@ -116,9 +227,12 @@ Partial Class CreateRapport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(554, 255)
+        Me.ClientSize = New System.Drawing.Size(554, 592)
         Me.Controls.Add(Me.btnAnnuler)
         Me.Controls.Add(Me.btnEnregistrer)
+        Me.Controls.Add(Me.pnlProduits)
+        Me.Controls.Add(Me.txtContenu)
+        Me.Controls.Add(Me.lblContenu)
         Me.Controls.Add(Me.txtMedecin)
         Me.Controls.Add(Me.lblMedecin)
         Me.Controls.Add(Me.txtDescription)
@@ -129,6 +243,9 @@ Partial Class CreateRapport
         Me.Name = "CreateRapport"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Création de Rapports"
+        CType(Me.nudQuantite, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlProduits.ResumeLayout(False)
+        Me.pnlProduits.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
     End Sub
@@ -140,6 +257,18 @@ Partial Class CreateRapport
     Friend WithEvents txtDescription As TextBox
     Friend WithEvents lblMedecin As Label
     Friend WithEvents txtMedecin As TextBox
+    Friend WithEvents lblContenu As Label
+    Friend WithEvents txtContenu As TextBox
+    Friend WithEvents lblProduits As Label
+    Friend WithEvents cmbProduits As ComboBox
+    Friend WithEvents btnAjouterProduit As Button
+    Friend WithEvents lstProduits As ListBox
+    Friend WithEvents nudQuantite As NumericUpDown
+    Friend WithEvents lblQuantite As Label
+    Friend WithEvents btnSupprimerProduit As Button
+    Friend WithEvents lblCommentaire As Label
+    Friend WithEvents txtCommentaire As TextBox
+    Friend WithEvents pnlProduits As Panel
     Friend WithEvents btnEnregistrer As Button
     Friend WithEvents btnAnnuler As Button
 End Class

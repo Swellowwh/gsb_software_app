@@ -8,6 +8,24 @@ Public Class CreateRapport
     Private myReader As Odbc.OdbcDataReader
     Private connString As String = "DSN=CnxOracleFermeD25;Uid=SLAM7;Pwd=slam7;"
 
+    ' Structure pour stocker les produits sélectionnés
+    Private Structure ProduitSelectionne
+        Public ID As Integer
+        Public Libelle As String
+        Public Quantite As Integer
+        Public Commentaire As String
+
+        Public Overrides Function ToString() As String
+            Return Libelle & " - Qté: " & Quantite & If(Not String.IsNullOrEmpty(Commentaire), " - " & Commentaire, "")
+        End Function
+    End Structure
+
+    ' Liste des produits disponibles
+    Private produits As New Dictionary(Of Integer, String)
+
+    ' Liste des produits sélectionnés pour ce rapport
+    Private produitsSelectionnes As New List(Of ProduitSelectionne)
+
     ' Propriétés utilisateur
     Public Property UserID As String = "1"  ' Sera récupéré du formulaire parent
     Public Property UserName As String = "Visiteur Test"
@@ -17,35 +35,8 @@ Public Class CreateRapport
         ' Remplir automatiquement les champs avec des valeurs par défaut
         RemplirChampsParDefaut()
 
-        ' Ajout du nouveau champ pour le contenu du rapport
-        AjouterChampContenu()
-    End Sub
-
-    Private Sub AjouterChampContenu()
-        ' Ajuster la taille du formulaire pour accueillir le nouveau champ
-        Me.Height = 380
-
-        ' Créer le label pour le contenu
-        Dim lblContenu As New Label()
-        lblContenu.AutoSize = True
-        lblContenu.Location = New Point(16, 255)
-        lblContenu.Name = "lblContenu"
-        lblContenu.Size = New System.Drawing.Size(69, 13)
-        lblContenu.Text = "Contenu :"
-        Me.Controls.Add(lblContenu)
-
-        ' Créer le TextBox pour le contenu
-        Dim txtContenu As New TextBox()
-        txtContenu.Location = New Point(89, 255)
-        txtContenu.Multiline = True
-        txtContenu.Name = "txtContenu"
-        txtContenu.ScrollBars = ScrollBars.Vertical
-        txtContenu.Size = New Size(447, 80)
-        Me.Controls.Add(txtContenu)
-
-        ' Repositionner les boutons existants
-        btnEnregistrer.Location = New Point(btnEnregistrer.Location.X, 350)
-        btnAnnuler.Location = New Point(btnAnnuler.Location.X, 350)
+        ' Charger la liste des produits disponibles
+        ChargerProduits()
     End Sub
 
     Private Sub RemplirChampsParDefaut()
@@ -54,6 +45,132 @@ Public Class CreateRapport
 
         ' Ajouter des valeurs par défaut dans les champs texte
         txtDescription.Text = "Visite effectuée le " & DateTime.Now.ToString("dd/MM/yyyy")
+    End Sub
+
+    ' Méthode pour charger les produits depuis la base de données
+    Private Sub ChargerProduits()
+        Try
+            ' Ouvrir la connexion
+            myConnection.ConnectionString = connString
+            myConnection.Open()
+
+            ' Requête pour récupérer tous les produits
+            myCommand.Connection = myConnection
+            myCommand.CommandText = "SELECT PRODUIT_ID, LIBELLE FROM PRODUIT ORDER BY LIBELLE"
+
+            ' Exécuter la requête et lire les résultats
+            myReader = myCommand.ExecuteReader()
+
+            ' Vider les collections existantes
+            produits.Clear()
+            cmbProduits.Items.Clear()
+
+            ' Parcourir les résultats et ajouter les produits à la liste
+            While myReader.Read()
+                Dim produitID As Integer = Convert.ToInt32(myReader("PRODUIT_ID"))
+                Dim libelle As String = myReader("LIBELLE").ToString()
+
+                ' Ajouter au Dictionary
+                produits.Add(produitID, libelle)
+
+                ' Ajouter au ComboBox
+                cmbProduits.Items.Add(libelle)
+            End While
+
+            ' Sélectionner le premier produit s'il y en a
+            If cmbProduits.Items.Count > 0 Then
+                cmbProduits.SelectedIndex = 0
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Erreur lors du chargement des produits: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            ' Fermer le reader et la connexion
+            If myReader IsNot Nothing AndAlso Not myReader.IsClosed Then
+                myReader.Close()
+            End If
+
+            If myConnection.State = ConnectionState.Open Then
+                myConnection.Close()
+            End If
+        End Try
+    End Sub
+
+    Private Sub btnAjouterProduit_Click(sender As Object, e As EventArgs) Handles btnAjouterProduit.Click
+        Try
+            ' Vérifier qu'un produit est sélectionné
+            If cmbProduits.SelectedIndex < 0 Then
+                MessageBox.Show("Veuillez sélectionner un produit.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Return
+            End If
+
+            ' Récupérer le produit sélectionné
+            Dim libelleProduit As String = cmbProduits.SelectedItem.ToString()
+            Dim produitID As Integer = -1
+
+            ' Trouver l'ID du produit à partir de son libellé
+            For Each kvp As KeyValuePair(Of Integer, String) In produits
+                If kvp.Value = libelleProduit Then
+                    produitID = kvp.Key
+                    Exit For
+                End If
+            Next
+
+            ' Vérifier que l'ID a été trouvé
+            If produitID = -1 Then
+                MessageBox.Show("Impossible de trouver l'ID du produit sélectionné.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            ' Créer une nouvelle structure ProduitSelectionne
+            Dim nouveauProduit As New ProduitSelectionne With {
+                .ID = produitID,
+                .Libelle = libelleProduit,
+                .Quantite = Convert.ToInt32(nudQuantite.Value),
+                .Commentaire = txtCommentaire.Text
+            }
+
+            ' Ajouter le produit à la liste
+            produitsSelectionnes.Add(nouveauProduit)
+
+            ' Mettre à jour la liste visuelle
+            MettreAJourListeProduits()
+
+            ' Réinitialiser les contrôles
+            nudQuantite.Value = 1
+            txtCommentaire.Text = ""
+
+        Catch ex As Exception
+            MessageBox.Show("Erreur lors de l'ajout du produit: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    Private Sub btnSupprimerProduit_Click(sender As Object, e As EventArgs) Handles btnSupprimerProduit.Click
+        Try
+            ' Vérifier qu'un produit est sélectionné
+            If lstProduits.SelectedIndex < 0 Then
+                MessageBox.Show("Veuillez sélectionner un produit à supprimer.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Return
+            End If
+
+            ' Supprimer le produit sélectionné
+            produitsSelectionnes.RemoveAt(lstProduits.SelectedIndex)
+
+            ' Mettre à jour la liste visuelle
+            MettreAJourListeProduits()
+
+        Catch ex As Exception
+            MessageBox.Show("Erreur lors de la suppression du produit: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    ' Méthode pour mettre à jour la liste visuelle des produits
+    Private Sub MettreAJourListeProduits()
+        lstProduits.Items.Clear()
+
+        For Each produit As ProduitSelectionne In produitsSelectionnes
+            lstProduits.Items.Add(produit.ToString())
+        Next
     End Sub
 
     Private Sub btnEnregistrer_Click(sender As Object, e As EventArgs) Handles btnEnregistrer.Click
@@ -71,40 +188,63 @@ Public Class CreateRapport
                 Return
             End If
 
-            ' Récupérer le contenu du rapport
-            Dim contenuRapport As String = ""
-
-            For Each control As Control In Me.Controls
-                If control.Name = "txtContenu" Then
-                    contenuRapport = DirectCast(control, TextBox).Text
-                    Exit For
-                End If
-            Next
-
             ' Préparer la connexion
             myConnection.ConnectionString = connString
             myConnection.Open()
 
-            ' Créer la requête SQL pour insérer un nouveau rapport
-            myCommand.Connection = myConnection
-            myCommand.CommandText = "INSERT INTO RAPPORT_DE_VISITE (DATE_VISITE, MOTIF_VISITE, CONTENU_VISITE, NOM_MEDECIN) " &
-                                   "VALUES (?, ?, ?, ?)"
+            ' Commencer une transaction
+            Dim transaction As OdbcTransaction = myConnection.BeginTransaction()
 
-            ' Ajouter les paramètres
-            myCommand.Parameters.Clear()
-            myCommand.Parameters.AddWithValue("DATE_VISITE", dtpDate.Value)
-            myCommand.Parameters.AddWithValue("MOTIF_VISITE", txtDescription.Text)
-            myCommand.Parameters.AddWithValue("CONTENU_VISITE", contenuRapport)
-            myCommand.Parameters.AddWithValue("NOM_MEDECIN", txtMedecin.Text)
+            Try
+                ' Créer la requête SQL pour insérer un nouveau rapport
+                myCommand.Connection = myConnection
+                myCommand.Transaction = transaction
+                myCommand.CommandText = "INSERT INTO RAPPORT_DE_VISITE (DATE_VISITE, MOTIF_VISITE, CONTENU_VISITE, NOM_MEDECIN) " &
+                                       "VALUES (?, ?, ?, ?)"
 
-            ' Exécuter la requête
-            Dim nbLignes As Integer = myCommand.ExecuteNonQuery()
-            If nbLignes > 0 Then
+                ' Ajouter les paramètres
+                myCommand.Parameters.Clear()
+                myCommand.Parameters.AddWithValue("DATE_VISITE", dtpDate.Value)
+                myCommand.Parameters.AddWithValue("MOTIF_VISITE", txtDescription.Text)
+                myCommand.Parameters.AddWithValue("CONTENU_VISITE", txtContenu.Text)
+                myCommand.Parameters.AddWithValue("NOM_MEDECIN", txtMedecin.Text)
+
+                ' Exécuter la requête
+                Dim nbLignes As Integer = myCommand.ExecuteNonQuery()
+
+                ' Récupérer l'ID du rapport inséré
+                Dim rapportID As Integer = -1
+                myCommand.CommandText = "SELECT MAX(ID_RAPPORT) FROM RAPPORT_DE_VISITE"
+                rapportID = Convert.ToInt32(myCommand.ExecuteScalar())
+
+                ' Insérer les produits associés à ce rapport
+                If produitsSelectionnes.Count > 0 Then
+                    For Each produit As ProduitSelectionne In produitsSelectionnes
+                        myCommand.CommandText = "INSERT INTO RAPPORT_PRODUIT (ID_RAPPORT, PRODUIT_ID, QUANTITE) " &
+                                               "VALUES (?, ?, ?, ?)"
+
+                        myCommand.Parameters.Clear()
+                        myCommand.Parameters.AddWithValue("ID_RAPPORT", rapportID)
+                        myCommand.Parameters.AddWithValue("PRODUIT_ID", produit.ID)
+                        myCommand.Parameters.AddWithValue("QUANTITE", produit.Quantite)
+
+                        myCommand.ExecuteNonQuery()
+                    Next
+                End If
+
+                ' Valider la transaction
+                transaction.Commit()
+
                 MessageBox.Show("Rapport enregistré avec succès!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Me.DialogResult = DialogResult.OK
                 Me.Close()  ' Fermer le formulaire après enregistrement
-            Else
-                MessageBox.Show("Aucun rapport n'a été enregistré.", "Avertissement", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            End If
+
+            Catch ex As Exception
+                ' En cas d'erreur, annuler la transaction
+                transaction.Rollback()
+                Throw ' Relancer l'exception pour qu'elle soit attrapée par le bloc catch externe
+            End Try
+
         Catch ex As Exception
             MessageBox.Show("Erreur lors de l'enregistrement du rapport: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
@@ -117,6 +257,7 @@ Public Class CreateRapport
 
     Private Sub btnAnnuler_Click(sender As Object, e As EventArgs) Handles btnAnnuler.Click
         ' Fermer le formulaire sans enregistrer
+        Me.DialogResult = DialogResult.Cancel
         Me.Close()
     End Sub
 End Class
