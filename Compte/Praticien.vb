@@ -23,4 +23,8 @@
         ' Fermer le formulaire
         Me.Close()
     End Sub
+
+    Private Sub LblMessage_Click(sender As Object, e As EventArgs) Handles LblMessage.Click
+
+    End Sub
 End Class

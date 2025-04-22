@@ -73,6 +73,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnexionOracle.vb" />
     <Compile Include="CreateRapport.Designer.vb">
       <DependentUpon>CreateRapport.vb</DependentUpon>
     </Compile>

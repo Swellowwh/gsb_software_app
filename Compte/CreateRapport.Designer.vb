@@ -53,7 +53,7 @@ Partial Class CreateRapport
         Me.lblTitre.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTitre.Location = New System.Drawing.Point(12, 9)
         Me.lblTitre.Name = "lblTitre"
-        Me.lblTitre.Size = New System.Drawing.Size(201, 24)
+        Me.lblTitre.Size = New System.Drawing.Size(207, 24)
         Me.lblTitre.TabIndex = 0
         Me.lblTitre.Text = "Création de Rapports"
         '
@@ -79,7 +79,7 @@ Partial Class CreateRapport
         Me.lblDescription.AutoSize = True
         Me.lblDescription.Location = New System.Drawing.Point(16, 85)
         Me.lblDescription.Name = "lblDescription"
-        Me.lblDescription.Size = New System.Drawing.Size(69, 13)
+        Me.lblDescription.Size = New System.Drawing.Size(87, 13)
         Me.lblDescription.TabIndex = 9
         Me.lblDescription.Text = "Motif du rapport :"
         '
@@ -91,6 +91,24 @@ Partial Class CreateRapport
         Me.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtDescription.Size = New System.Drawing.Size(447, 80)
         Me.txtDescription.TabIndex = 10
+        '
+        'btnEnregistrer
+        '
+        Me.btnEnregistrer.Location = New System.Drawing.Point(89, 555)
+        Me.btnEnregistrer.Name = "btnEnregistrer"
+        Me.btnEnregistrer.Size = New System.Drawing.Size(100, 25)
+        Me.btnEnregistrer.TabIndex = 25
+        Me.btnEnregistrer.Text = "Enregistrer"
+        Me.btnEnregistrer.UseVisualStyleBackColor = True
+        '
+        'btnAnnuler
+        '
+        Me.btnAnnuler.Location = New System.Drawing.Point(195, 555)
+        Me.btnAnnuler.Name = "btnAnnuler"
+        Me.btnAnnuler.Size = New System.Drawing.Size(100, 25)
+        Me.btnAnnuler.TabIndex = 26
+        Me.btnAnnuler.Text = "Annuler"
+        Me.btnAnnuler.UseVisualStyleBackColor = True
         '
         'lblMedecin
         '
@@ -113,7 +131,7 @@ Partial Class CreateRapport
         Me.lblContenu.AutoSize = True
         Me.lblContenu.Location = New System.Drawing.Point(16, 215)
         Me.lblContenu.Name = "lblContenu"
-        Me.lblContenu.Size = New System.Drawing.Size(54, 13)
+        Me.lblContenu.Size = New System.Drawing.Size(53, 13)
         Me.lblContenu.TabIndex = 13
         Me.lblContenu.Text = "Contenu :"
         '
@@ -175,7 +193,7 @@ Partial Class CreateRapport
         Me.lblQuantite.AutoSize = True
         Me.lblQuantite.Location = New System.Drawing.Point(3, 39)
         Me.lblQuantite.Name = "lblQuantite"
-        Me.lblQuantite.Size = New System.Drawing.Size(56, 13)
+        Me.lblQuantite.Size = New System.Drawing.Size(53, 13)
         Me.lblQuantite.TabIndex = 20
         Me.lblQuantite.Text = "Quantité :"
         '
@@ -187,6 +205,20 @@ Partial Class CreateRapport
         Me.btnSupprimerProduit.TabIndex = 21
         Me.btnSupprimerProduit.Text = "Supprimer le produit"
         Me.btnSupprimerProduit.UseVisualStyleBackColor = True
+        '
+        'lblCommentaire
+        '
+        Me.lblCommentaire.Location = New System.Drawing.Point(0, 0)
+        Me.lblCommentaire.Name = "lblCommentaire"
+        Me.lblCommentaire.Size = New System.Drawing.Size(100, 23)
+        Me.lblCommentaire.TabIndex = 17
+        '
+        'txtCommentaire
+        '
+        Me.txtCommentaire.Location = New System.Drawing.Point(0, 0)
+        Me.txtCommentaire.Name = "txtCommentaire"
+        Me.txtCommentaire.Size = New System.Drawing.Size(100, 20)
+        Me.txtCommentaire.TabIndex = 16
         '
         'pnlProduits
         '
@@ -204,24 +236,6 @@ Partial Class CreateRapport
         Me.pnlProduits.Name = "pnlProduits"
         Me.pnlProduits.Size = New System.Drawing.Size(517, 230)
         Me.pnlProduits.TabIndex = 24
-        '
-        'btnEnregistrer
-        '
-        Me.btnEnregistrer.Location = New System.Drawing.Point(89, 555)
-        Me.btnEnregistrer.Name = "btnEnregistrer"
-        Me.btnEnregistrer.Size = New System.Drawing.Size(100, 25)
-        Me.btnEnregistrer.TabIndex = 25
-        Me.btnEnregistrer.Text = "Enregistrer"
-        Me.btnEnregistrer.UseVisualStyleBackColor = True
-        '
-        'btnAnnuler
-        '
-        Me.btnAnnuler.Location = New System.Drawing.Point(195, 555)
-        Me.btnAnnuler.Name = "btnAnnuler"
-        Me.btnAnnuler.Size = New System.Drawing.Size(100, 25)
-        Me.btnAnnuler.TabIndex = 26
-        Me.btnAnnuler.Text = "Annuler"
-        Me.btnAnnuler.UseVisualStyleBackColor = True
         '
         'CreateRapport
         '
@@ -248,6 +262,7 @@ Partial Class CreateRapport
         Me.pnlProduits.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
+
     End Sub
 
     Friend WithEvents lblTitre As Label

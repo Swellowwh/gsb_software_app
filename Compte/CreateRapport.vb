@@ -2,11 +2,13 @@
 Imports System.Data.Odbc
 
 Public Class CreateRapport
-    ' Déclaration des variables de connexion
-    Private myConnection As New Odbc.OdbcConnection
+    ' MODIFIÉ : Suppression des variables de connexion globales
+    ' Supprimé : Private myConnection As New Odbc.OdbcConnection
+    ' Supprimé : Private connString As String = "DSN=CnxOracleFermeD25;Uid=SLAM7;Pwd=slam7;"
+
+    ' Variables globales restantes
     Private myCommand As New Odbc.OdbcCommand
     Private myReader As Odbc.OdbcDataReader
-    Private connString As String = "DSN=CnxOracleFermeD25;Uid=SLAM7;Pwd=slam7;"
 
     ' Structure pour stocker les produits sélectionnés
     Private Structure ProduitSelectionne
@@ -50,9 +52,8 @@ Public Class CreateRapport
     ' Méthode pour charger les produits depuis la base de données
     Private Sub ChargerProduits()
         Try
-            ' Ouvrir la connexion
-            myConnection.ConnectionString = connString
-            myConnection.Open()
+            ' MODIFIÉ : Utilisation de ConnectionOracle.GetConnection()
+            Dim myConnection = ConnectionOracle.GetConnection()
 
             ' Requête pour récupérer tous les produits
             myCommand.Connection = myConnection
@@ -85,14 +86,12 @@ Public Class CreateRapport
         Catch ex As Exception
             MessageBox.Show("Erreur lors du chargement des produits: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
-            ' Fermer le reader et la connexion
+            ' MODIFIÉ : Simplifié la fermeture des ressources
             If myReader IsNot Nothing AndAlso Not myReader.IsClosed Then
                 myReader.Close()
             End If
-
-            If myConnection.State = ConnectionState.Open Then
-                myConnection.Close()
-            End If
+            ' SUPPRIMÉ : Plus besoin de fermer la connexion ici
+            ' La connexion est gérée par ConnectionOracle
         End Try
     End Sub
 
@@ -188,9 +187,8 @@ Public Class CreateRapport
                 Return
             End If
 
-            ' Préparer la connexion
-            myConnection.ConnectionString = connString
-            myConnection.Open()
+            ' MODIFIÉ : Utilisation de ConnectionOracle.GetConnection()
+            Dim myConnection = ConnectionOracle.GetConnection()
 
             ' Commencer une transaction
             Dim transaction As OdbcTransaction = myConnection.BeginTransaction()
@@ -220,8 +218,9 @@ Public Class CreateRapport
                 ' Insérer les produits associés à ce rapport
                 If produitsSelectionnes.Count > 0 Then
                     For Each produit As ProduitSelectionne In produitsSelectionnes
+                        ' MODIFIÉ : Correction du nombre de paramètres (3 au lieu de 4)
                         myCommand.CommandText = "INSERT INTO RAPPORT_PRODUIT (ID_RAPPORT, PRODUIT_ID, QUANTITE) " &
-                                               "VALUES (?, ?, ?, ?)"
+                                               "VALUES (?, ?, ?)"
 
                         myCommand.Parameters.Clear()
                         myCommand.Parameters.AddWithValue("ID_RAPPORT", rapportID)
@@ -248,10 +247,8 @@ Public Class CreateRapport
         Catch ex As Exception
             MessageBox.Show("Erreur lors de l'enregistrement du rapport: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
-            ' Fermer la connexion
-            If myConnection.State = ConnectionState.Open Then
-                myConnection.Close()
-            End If
+            ' SUPPRIMÉ : Plus besoin de fermer la connexion ici
+            ' La connexion est gérée par ConnectionOracle
         End Try
     End Sub
 
@@ -259,5 +256,9 @@ Public Class CreateRapport
         ' Fermer le formulaire sans enregistrer
         Me.DialogResult = DialogResult.Cancel
         Me.Close()
+    End Sub
+
+    Private Sub txtDescription_TextChanged(sender As Object, e As EventArgs) Handles txtDescription.TextChanged
+
     End Sub
 End Class

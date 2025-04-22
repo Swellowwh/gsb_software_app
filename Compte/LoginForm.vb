@@ -1,8 +1,11 @@
 ﻿Public Class LoginForm
-    Dim myConnection As New Odbc.OdbcConnection
+    ' MODIFIÉ : Suppression des variables de connexion globales
+    ' Supprimé : Dim myConnection As New Odbc.OdbcConnection
+    ' Supprimé : Dim connString As String
+
+    ' Variables restantes
     Dim myCommand As New Odbc.OdbcCommand
     Dim myReader As Odbc.OdbcDataReader
-    Dim connString As String
 
     Private Sub LoginForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ' Centrer le formulaire sur l'écran
@@ -25,10 +28,8 @@
 
         ' Tentative de connexion à la base de données
         Try
-            ' Configurer la chaîne de connexion avec les identifiants fixés
-            connString = "DSN=CnxOracleFermeD25;Uid=SLAM7;Pwd=slam7;"
-            myConnection.ConnectionString = connString
-            myConnection.Open()
+            ' MODIFIÉ : Utilisation de ConnectionOracle.GetConnection()
+            Dim myConnection = ConnectionOracle.GetConnection()
 
             ' Vérifier si l'utilisateur existe dans la base de données
             ' Modifier la requête pour récupérer également le nom du rôle avec une jointure
@@ -67,9 +68,11 @@
                     visitorID = myReader.GetString(0) ' Récupérer l'ID du visiteur
                 End If
 
-                ' Fermer le reader et la connexion avant de passer au formulaire suivant
+                ' Fermer le reader
                 myReader.Close()
-                myConnection.Close()
+
+                ' MODIFIÉ : Plus besoin de fermer la connexion ici
+                ' ConnectionOracle gère la connexion
 
                 ' Message de bienvenue
                 MessageBox.Show("Bienvenue " & userNom & " " & userPrenom & " (" & userRoleName & ")",
@@ -115,9 +118,8 @@
                 myReader.Close()
             End If
 
-            If myConnection.State = ConnectionState.Open Then
-                myConnection.Close()
-            End If
+            ' MODIFIÉ : Plus besoin de fermer la connexion ici
+            ' ConnectionOracle gère la connexion
         End Try
     End Sub
 

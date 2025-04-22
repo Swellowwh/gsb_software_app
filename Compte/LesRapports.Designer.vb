@@ -47,7 +47,7 @@ Partial Class LesRapports
         Me.dgvRapports.ReadOnly = True
         Me.dgvRapports.RowHeadersVisible = False
         Me.dgvRapports.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvRapports.Size = New System.Drawing.Size(900, 460)
+        Me.dgvRapports.Size = New System.Drawing.Size(1200, 460)
         Me.dgvRapports.TabIndex = 0
         '
         'pnlActions
@@ -59,7 +59,7 @@ Partial Class LesRapports
         Me.pnlActions.Location = New System.Drawing.Point(0, 540)
         Me.pnlActions.Name = "pnlActions"
         Me.pnlActions.Padding = New System.Windows.Forms.Padding(10)
-        Me.pnlActions.Size = New System.Drawing.Size(900, 60)
+        Me.pnlActions.Size = New System.Drawing.Size(1200, 60)
         Me.pnlActions.TabIndex = 2
         '
         'btnAjouter
@@ -88,7 +88,7 @@ Partial Class LesRapports
         Me.lblTitre.Location = New System.Drawing.Point(0, 0)
         Me.lblTitre.Name = "lblTitre"
         Me.lblTitre.Padding = New System.Windows.Forms.Padding(10)
-        Me.lblTitre.Size = New System.Drawing.Size(900, 50)
+        Me.lblTitre.Size = New System.Drawing.Size(1200, 50)
         Me.lblTitre.TabIndex = 3
         Me.lblTitre.Text = "Synthèse des visites de"
         Me.lblTitre.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -102,7 +102,7 @@ Partial Class LesRapports
         Me.pnlUserInfo.Location = New System.Drawing.Point(0, 50)
         Me.pnlUserInfo.Name = "pnlUserInfo"
         Me.pnlUserInfo.Padding = New System.Windows.Forms.Padding(10, 5, 10, 5)
-        Me.pnlUserInfo.Size = New System.Drawing.Size(900, 30)
+        Me.pnlUserInfo.Size = New System.Drawing.Size(1200, 30)
         Me.pnlUserInfo.TabIndex = 4
         '
         'lblUserInfo
@@ -119,7 +119,7 @@ Partial Class LesRapports
         Me.lblUserRole.AutoSize = True
         Me.lblUserRole.Location = New System.Drawing.Point(250, 8)
         Me.lblUserRole.Name = "lblUserRole"
-        Me.lblUserRole.Size = New System.Drawing.Size(32, 13)
+        Me.lblUserRole.Size = New System.Drawing.Size(35, 13)
         Me.lblUserRole.TabIndex = 1
         Me.lblUserRole.Text = "Rôle: "
         '

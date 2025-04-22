@@ -48,7 +48,7 @@ Partial Class Praticien
         Me.LblTitre.ForeColor = System.Drawing.Color.White
         Me.LblTitre.Location = New System.Drawing.Point(12, 18)
         Me.LblTitre.Name = "LblTitre"
-        Me.LblTitre.Size = New System.Drawing.Size(291, 25)
+        Me.LblTitre.Size = New System.Drawing.Size(301, 25)
         Me.LblTitre.TabIndex = 0
         Me.LblTitre.Text = "Espace Praticien - Médecin"
         '
@@ -74,8 +74,8 @@ Partial Class Praticien
         Me.LblMessage.Name = "LblMessage"
         Me.LblMessage.Size = New System.Drawing.Size(472, 120)
         Me.LblMessage.TabIndex = 0
-        Me.LblMessage.Text = "Vous êtes connecté en tant que praticien." & Global.Microsoft.VisualBasic.Constants.vbCrLf & Global.Microsoft.VisualBasic.Constants.vbCrLf & "Pour l'instant, aucune fonctionnalité " &
-    "n'est disponible dans cette section." & Global.Microsoft.VisualBasic.Constants.vbCrLf & Global.Microsoft.VisualBasic.Constants.vbCrLf & "Merci de votre compréhension."
+        Me.LblMessage.Text = "Vous êtes connecté en tant que praticien." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Pour l'instant, aucune fonctionnalit" &
+    "é n'est disponible dans cette section." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Merci de votre compréhension."
         Me.LblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'BtnFermer

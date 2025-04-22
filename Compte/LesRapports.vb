@@ -2,12 +2,14 @@
 Imports System.Data.Odbc
 
 Public Class LesRapports
-    ' Déclaration des variables de connexion
-    Private myConnection As New Odbc.OdbcConnection
+    ' MODIFIÉ : Suppression des variables de connexion globales
+    ' Supprimé : Private myConnection As New Odbc.OdbcConnection
+    ' Supprimé : Private connString As String = "DSN=CnxOracleFermeD25;Uid=SLAM7;Pwd=slam7;"
+
+    ' Variables restantes
     Private myCommand As New Odbc.OdbcCommand
     Private myAdapter As New Odbc.OdbcDataAdapter
     Private myDataSet As New DataSet
-    Private connString As String = "DSN=CnxOracleFermeD25;Uid=SLAM7;Pwd=slam7;"
 
     ' Propriétés utilisateur
     Public Property UserID As String
@@ -80,14 +82,8 @@ Public Class LesRapports
     ' Méthode pour charger les rapports depuis la base de données avec les produits présentés
     Private Sub ChargerRapports()
         Try
-            ' IMPORTANT: Assurez-vous que toute connexion précédente est fermée
-            If myConnection.State = ConnectionState.Open Then
-                myConnection.Close()
-            End If
-
-            ' Ouvrir la connexion
-            myConnection.ConnectionString = connString
-            myConnection.Open()
+            ' MODIFIÉ : Utilisation de ConnectionOracle.GetConnection()
+            Dim myConnection = ConnectionOracle.GetConnection()
 
             ' Configurer la commande pour récupérer les rapports avec les produits associés
             Dim sqlQuery As String = "SELECT rv.ID_RAPPORT, rv.DATE_VISITE, rv.MOTIF_VISITE, rv.CONTENU_VISITE, rv.NOM_MEDECIN "
@@ -160,23 +156,18 @@ Public Class LesRapports
             MessageBox.Show("Erreur lors du chargement des rapports: " & ex.Message & Environment.NewLine &
                    "Trace de la pile: " & ex.StackTrace, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
-            ' Fermer la connexion
-            If myConnection.State = ConnectionState.Open Then
-                myConnection.Close()
-            End If
+            ' SUPPRIMÉ : Plus besoin de fermer la connexion ici
+            ' La connexion est gérée par ConnectionOracle
         End Try
     End Sub
 
-    ' Nouvelle méthode pour récupérer les produits associés à un rapport
     ' Nouvelle méthode pour récupérer les produits associés à un rapport
     Private Function RecupererProduitsRapport(ByVal idRapport As Integer) As String
         Dim listeProduits As String = ""
 
         Try
-            ' Utiliser une connexion séparée pour cette requête
-            Using conn As New OdbcConnection(connString)
-                conn.Open()
-
+            ' MODIFIÉ : Utilisation de ConnectionOracle.GetConnection()
+            Using conn = ConnectionOracle.GetConnection()
                 ' Requête pour récupérer les produits associés au rapport avec leur quantité
                 Dim query As String = "SELECT p.LIBELLE, rp.QUANTITE FROM RAPPORT_PRODUIT rp " &
                                  "JOIN PRODUIT p ON rp.PRODUIT_ID = p.PRODUIT_ID " &
@@ -445,10 +436,8 @@ Public Class LesRapports
     ' Méthode pour supprimer un rapport
     Private Sub SupprimerRapport(ByVal idVisite As Integer)
         Try
-            ' IMPORTANT: Utiliser une connexion séparée pour éviter les conflits
-            Using deleteConnection As New OdbcConnection(connString)
-                deleteConnection.Open()
-
+            ' MODIFIÉ : Utilisation de ConnectionOracle.GetConnection()
+            Using deleteConnection = ConnectionOracle.GetConnection()
                 ' Supprimer d'abord les associations avec les produits
                 Using deleteProductsCommand As New OdbcCommand("DELETE FROM RAPPORT_PRODUIT WHERE ID_RAPPORT = ?", deleteConnection)
                     deleteProductsCommand.Parameters.AddWithValue("?", idVisite)
@@ -504,5 +493,9 @@ Public Class LesRapports
     ' Redimensionne les contrôles lorsque la fenêtre est redimensionnée
     Private Sub LesRapports_Resize(sender As Object, e As EventArgs) Handles Me.Resize
         AjusterLayout()
+    End Sub
+
+    Private Sub dgvRapports_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRapports.CellContentClick
+
     End Sub
 End Class

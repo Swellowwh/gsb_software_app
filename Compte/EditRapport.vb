@@ -1,11 +1,13 @@
 ﻿Imports System.Data.Odbc
 
 Public Class EditRapport
-    ' Variables de connexion à la base de données
-    Private myConnection As New Odbc.OdbcConnection
+    ' MODIFIÉ : Suppression des variables de connexion globales
+    ' Supprimé : Private myConnection As New Odbc.OdbcConnection
+    ' Supprimé : Private connString As String = "DSN=CnxOracleFermeD25;Uid=SLAM7;Pwd=slam7;"
+
+    ' Variables restantes
     Private myCommand As New Odbc.OdbcCommand
     Private myAdapter As New Odbc.OdbcDataAdapter
-    Private connString As String = "DSN=CnxOracleFermeD25;Uid=SLAM7;Pwd=slam7;"
 
     ' Propriétés utilisateur
     Public Property UserID As String
@@ -34,9 +36,8 @@ Public Class EditRapport
     ' Méthode pour charger les détails complets du rapport depuis la base de données
     Private Sub ChargerDetailsRapport()
         Try
-            ' Ouvrir une connexion à la base de données
-            myConnection.ConnectionString = connString
-            myConnection.Open()
+            ' MODIFIÉ : Utilisation de ConnectionOracle.GetConnection()
+            Dim myConnection = ConnectionOracle.GetConnection()
 
             ' Créer la commande SQL pour récupérer les détails du rapport
             Dim sqlQuery As String = "SELECT * FROM RAPPORT_DE_VISITE WHERE ID_RAPPORT = ?"
@@ -94,10 +95,8 @@ Public Class EditRapport
         Catch ex As Exception
             MessageBox.Show("Erreur lors du chargement des détails du rapport: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
-            ' Fermer la connexion
-            If myConnection.State = ConnectionState.Open Then
-                myConnection.Close()
-            End If
+            ' SUPPRIMÉ : Plus besoin de fermer la connexion ici
+            ' La connexion est gérée par ConnectionOracle
         End Try
     End Sub
 
@@ -117,9 +116,8 @@ Public Class EditRapport
                 Return
             End If
 
-            ' Ouvrir une connexion à la base de données
-            myConnection.ConnectionString = connString
-            myConnection.Open()
+            ' MODIFIÉ : Utilisation de ConnectionOracle.GetConnection()
+            Dim myConnection = ConnectionOracle.GetConnection()
 
             ' Créer la commande SQL pour mettre à jour le rapport
             ' On inclut maintenant le nom du médecin
@@ -151,10 +149,8 @@ Public Class EditRapport
         Catch ex As Exception
             MessageBox.Show("Erreur lors de la mise à jour du rapport: " & ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
-            ' Fermer la connexion
-            If myConnection.State = ConnectionState.Open Then
-                myConnection.Close()
-            End If
+            ' SUPPRIMÉ : Plus besoin de fermer la connexion ici
+            ' La connexion est gérée par ConnectionOracle
         End Try
     End Sub
 
@@ -163,5 +159,17 @@ Public Class EditRapport
         ' Définir le résultat du dialogue sur Cancel pour indiquer qu'aucune modification n'a été effectuée
         Me.DialogResult = DialogResult.Cancel
         Me.Close()
+    End Sub
+
+    Private Sub lblTitre_Click(sender As Object, e As EventArgs) Handles lblTitre.Click
+
+    End Sub
+
+    Private Sub lblUserInfo_Click(sender As Object, e As EventArgs) Handles lblUserInfo.Click
+
+    End Sub
+
+    Private Sub txtMotif_TextChanged(sender As Object, e As EventArgs) Handles txtMotif.TextChanged
+
     End Sub
 End Class

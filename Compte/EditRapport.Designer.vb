@@ -88,7 +88,7 @@ Partial Class EditRapport
         Me.lblMedecin.AutoSize = True
         Me.lblMedecin.Location = New System.Drawing.Point(20, 95)
         Me.lblMedecin.Name = "lblMedecin"
-        Me.lblMedecin.Size = New System.Drawing.Size(92, 13)
+        Me.lblMedecin.Size = New System.Drawing.Size(90, 13)
         Me.lblMedecin.TabIndex = 7
         Me.lblMedecin.Text = "Nom du médecin:"
         '
@@ -98,7 +98,7 @@ Partial Class EditRapport
         Me.lblRapportId.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblRapportId.Location = New System.Drawing.Point(410, 25)
         Me.lblRapportId.Name = "lblRapportId"
-        Me.lblRapportId.Size = New System.Drawing.Size(56, 13)
+        Me.lblRapportId.Size = New System.Drawing.Size(57, 13)
         Me.lblRapportId.TabIndex = 6
         Me.lblRapportId.Text = "ID: #123"
         '
@@ -117,7 +117,7 @@ Partial Class EditRapport
         Me.lblBilan.AutoSize = True
         Me.lblBilan.Location = New System.Drawing.Point(20, 130)
         Me.lblBilan.Name = "lblBilan"
-        Me.lblBilan.Size = New System.Drawing.Size(85, 13)
+        Me.lblBilan.Size = New System.Drawing.Size(86, 13)
         Me.lblBilan.TabIndex = 4
         Me.lblBilan.Text = "Bilan de la visite:"
         '
@@ -136,7 +136,7 @@ Partial Class EditRapport
         Me.lblDate.AutoSize = True
         Me.lblDate.Location = New System.Drawing.Point(20, 25)
         Me.lblDate.Name = "lblDate"
-        Me.lblDate.Size = New System.Drawing.Size(83, 13)
+        Me.lblDate.Size = New System.Drawing.Size(86, 13)
         Me.lblDate.TabIndex = 0
         Me.lblDate.Text = "Date de la visite:"
         '
@@ -155,7 +155,7 @@ Partial Class EditRapport
         Me.lblMotif.AutoSize = True
         Me.lblMotif.Location = New System.Drawing.Point(20, 60)
         Me.lblMotif.Name = "lblMotif"
-        Me.lblMotif.Size = New System.Drawing.Size(83, 13)
+        Me.lblMotif.Size = New System.Drawing.Size(86, 13)
         Me.lblMotif.TabIndex = 2
         Me.lblMotif.Text = "Motif de la visite:"
         '
