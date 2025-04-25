@@ -74,8 +74,7 @@ Partial Class Praticien
         Me.LblMessage.Name = "LblMessage"
         Me.LblMessage.Size = New System.Drawing.Size(472, 120)
         Me.LblMessage.TabIndex = 0
-        Me.LblMessage.Text = "Vous êtes connecté en tant que praticien." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Pour l'instant, aucune fonctionnalit" &
-    "é n'est disponible dans cette section." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Merci de votre compréhension."
+        Me.LblMessage.Text = "Vous êtes connecté en tant que praticien." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         Me.LblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'BtnFermer

@@ -9,9 +9,7 @@
         ' Personnaliser le message si un nom d'utilisateur est disponible
         If Not String.IsNullOrEmpty(UserName) Then
             LblMessage.Text = $"Bonjour Dr. {UserName}," & vbCrLf & vbCrLf &
-                            "Vous êtes connecté en tant que praticien." & vbCrLf & vbCrLf &
-                            "Pour l'instant, aucune fonctionnalité n'est disponible dans cette section." & vbCrLf & vbCrLf &
-                            "Merci de votre compréhension."
+                            "Vous êtes connecté en tant que praticien."
 
             ' Mettre à jour le titre avec le nom du praticien
             LblTitre.Text = $"Espace Praticien - Dr. {UserName}"

@@ -4,7 +4,8 @@ Public Class ConnectionOracle
 
     Private Shared _connection As OdbcConnection
 
-    Private Const ConnectionString As String = "DSN=CnxOracleFermeD25;UID=slam7;PWD=slam7;"
+    Private Const ConnectionString As String = "DSN=THOMAS;UID=GSBPROD;PWD=SThomas;"
+    'Private Const ConnectionString As String = "DSN=CnxOracleFermeD25;UID=slam7;PWD=slam7;"
 
     Public Shared Function GetConnection() As OdbcConnection
 
